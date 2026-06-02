@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "date": "2026-06-02",
+    "title": "기간별 수집 현황 (R30~R35)",
+    "description": "2026.02.01 ~ 2026.05.31 기간 R30~R35 수집 데이터 분석",
+    "path": "reports/2026-06-02/period_collection_r30r35_final.html"
+  }
+]
