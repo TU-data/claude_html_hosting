@@ -10,5 +10,11 @@
     "title": "기간별 수집 현황 (R30~R35)",
     "description": "2026.02.01 ~ 2026.05.31 기간 R30~R35 수집 데이터 분석",
     "path": "reports/2026-06-02/period_collection_r30r35_final.html"
+  },
+  {
+    "date": "2026-06-02",
+    "title": "국내 인당 치식수 월별 분포 — 2026년 1~5월",
+    "description": "2026년 1~5월 국내 환자 1인당 시술 치식수 분포를 월별로 비교한 히스토그램. 1~3월 평균 8.92~8.98치에서 4~5월 9.86~10.11치로 상승한 원인 분석.",
+    "path": "reports/2026-06-02/unit_count_distribution_by_month.html"
   }
 ]
