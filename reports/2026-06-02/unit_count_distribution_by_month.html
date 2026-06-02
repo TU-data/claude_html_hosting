@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>국내 인당 치식수 월별 분포 — 2026년 1~5월</title>
+  <meta name="description" content="2026년 1~5월 국내 환자 1인당 시술 치식수 분포를 월별로 비교한 히스토그램. 1~3월 평균 8.92~8.98치에서 4~5월 9.86~10.11치로 상승한 원인 분석.">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: #F4F4F4;
+      color: #1A1612;
+      min-height: 100vh;
+      padding: 40px 24px 64px;
+    }
+
+    .report-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── 헤더 ── */
+    .report-header {
+      margin-bottom: 32px;
+    }
+    .report-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #FF4500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .report-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1A1612;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+    .report-subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      color: #808080;
+    }
+
+    /* ── 스코어카드 ── */
+    .scorecard-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    @media (max-width: 640px) {
+      .scorecard-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .scorecard {
+      background: #FFFFFF;
+      border-radius: 11px;
+      padding: 14px 14px 12px;
+      border: 1px solid #E9E9E9;
+    }
+    .scorecard-label {
+      font-size: 11px;
+      font-weight: 400;
+      color: #808080;
+      margin-bottom: 4px;
+    }
+    .scorecard-value {
+      font-size: 22px;
+      font-weight: 600;
+      color: #1A1612;
+      line-height: 1.1;
+    }
+    .scorecard-value .unit {
+      font-size: 12px;
+      font-weight: 400;
+      color: #808080;
+    }
+    .scorecard-meta {
+      font-size: 11px;
+      color: #B4B4B4;
+      margin-top: 4px;
+    }
+    .scorecard.highlight .scorecard-value { color: #1D6FCC; }
+
+    /* ── 범례 ── */
+    .legend-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #4F4F4F;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .legend-note {
+      font-size: 11px;
+      color: #B4B4B4;
+      margin-left: auto;
+    }
+
+    /* ── 차트 영역 ── */
+    .chart-card {
+      background: #FFFFFF;
+      border-radius: 18px;
+      border: 1px solid #E9E9E9;
+      padding: 28px 28px 24px;
+      margin-bottom: 24px;
+    }
+    .chart-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1A1612;
+      margin-bottom: 4px;
+    }
+    .chart-card-desc {
+      font-size: 12px;
+      font-weight: 400;
+      color: #808080;
+      margin-bottom: 20px;
+    }
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      height: 320px;
+    }
+
+    /* ── 요약 테이블 ── */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    .summary-table th {
+      font-weight: 500;
+      color: #808080;
+      padding: 6px 8px;
+      text-align: right;
+      border-bottom: 1px solid #E9E9E9;
+    }
+    .summary-table th:first-child { text-align: left; }
+    .summary-table td {
+      padding: 6px 8px;
+      text-align: right;
+      color: #1A1612;
+      border-bottom: 1px solid #F4F4F4;
+    }
+    .summary-table td:first-child { text-align: left; color: #4F4F4F; }
+    .summary-table td.up   { color: #1D6FCC; font-weight: 500; }
+    .summary-table td.down { color: #D7263D; font-weight: 500; }
+
+    /* ── 구분선 ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #E9E9E9;
+      margin: 24px 0;
+    }
+
+    /* ── 인사이트 섹션 ── */
+    .insight-section {
+      background: #FFFFFF;
+      border-radius: 18px;
+      border: 1px solid #E9E9E9;
+      padding: 28px;
+    }
+    .insight-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1A1612;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .insight-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 18px;
+      background: #FF4500;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .insight-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .insight-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    .insight-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #FF4500;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .insight-body {
+      font-size: 13px;
+      font-weight: 400;
+      color: #4F4F4F;
+      line-height: 1.65;
+    }
+    .insight-body strong {
+      color: #1A1612;
+      font-weight: 600;
+    }
+    .insight-body .tag {
+      display: inline-block;
+      background: rgba(255,69,0,0.08);
+      color: #FF4500;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+
+    /* ── 푸터 ── */
+    .report-footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: #B4B4B4;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+<div class="report-wrap">
+
+  <!-- 헤더 -->
+  <div class="report-header">
+    <div class="report-label">치식수 분포 분석 · 국내 환자</div>
+    <h1 class="report-title">인당 치식수 월별 분포 — 2026년 1~5월</h1>
+    <p class="report-subtitle">테이블: 01_warehouse.14_treatment_analysis &nbsp;|&nbsp; 필터: nationality_type = 국내, treatment_name IN (BS, WH, BL, MARTH)</p>
+  </div>
+
+  <!-- 스코어카드 -->
+  <div class="scorecard-grid" id="scorecards"></div>
+
+  <!-- 차트 카드 -->
+  <div class="chart-card">
+    <div class="chart-card-title">구간별 비율 분포 (월별)</div>
+    <div class="chart-card-desc">행 1개 = 환자 1건(상담 1건) 기준 &nbsp;·&nbsp; Y축: 해당 월 전체 대비 비율(%)</div>
+
+    <div class="legend-row" id="legendRow">
+      <span class="legend-note">행 1개 = 환자 1건</span>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="histChart" role="img"
+        aria-label="국내 인당 치식수 월별 분포 히스토그램 — 1월부터 5월까지 구간별 비율 비교">
+      </canvas>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 요약 테이블 -->
+    <div id="tableWrap"></div>
+  </div>
+
+  <!-- 핵심 인사이트 -->
+  <div class="insight-section">
+    <div class="insight-title">핵심 인사이트</div>
+    <ul class="insight-list" id="insightList"></ul>
+  </div>
+
+  <p class="report-footer">데이터 기준: 2026-01-01 ~ 2026-05-31 &nbsp;·&nbsp; 생성: 2026-06-02</p>
+
+</div>
+
+<!-- ── 스크립트: 모든 DOM 요소 아래 위치 ── -->
+<script>
+(function(){
+
+  var MONTHS = [
+    { key:'1월',  color:'rgba(74,144,217,0.82)',  border:'#4A90D9', pct:[19.0,50.4,3.4,18.1,9.1,0.0],  cnt:[44,117,8,42,21,0],  avg:8.92, n:232 },
+    { key:'2월',  color:'rgba(122,184,245,0.82)', border:'#7AB8F5', pct:[22.5,41.8,7.5,21.1,7.0,0.0],  cnt:[48,89,16,45,15,0],  avg:8.95, n:213 },
+    { key:'3월',  color:'rgba(176,212,241,0.82)', border:'#B0D4F1', pct:[21.9,42.3,6.1,23.5,5.6,0.5],  cnt:[43,83,12,46,11,1],  avg:8.98, n:196 },
+    { key:'4월',  color:'rgba(224,123,58,0.85)',  border:'#E07B3A', pct:[15.5,44.0,4.8,26.8,8.3,0.6],  cnt:[26,74,8,45,14,1],   avg:9.86, n:168 },
+    { key:'5월',  color:'rgba(184,74,16,0.85)',   border:'#B84A10', pct:[14.2,42.6,8.1,23.0,12.2,0.0], cnt:[21,63,12,34,18,0],  avg:10.11, n:148 },
+  ];
+
+  var BIN_LABELS = ['1-4치','5-8치','9-12치','13-16치','17-20치','21+치'];
+
+  /* ── 스코어카드 ── */
+  var scHtml = '';
+  MONTHS.forEach(function(m, i){
+    var isHigh = i >= 3;
+    scHtml += '<div class="scorecard' + (isHigh ? ' highlight' : '') + '">'
+      + '<div class="scorecard-label">' + m.key + ' 평균</div>'
+      + '<div class="scorecard-value">' + m.avg.toFixed(2) + '<span class="unit">치</span></div>'
+      + '<div class="scorecard-meta">n=' + m.n + '</div>'
+      + '</div>';
+  });
+  document.getElementById('scorecards').innerHTML = scHtml;
+
+  /* ── 범례 ── */
+  var lgHtml = '';
+  MONTHS.forEach(function(m){
+    lgHtml += '<span class="legend-item">'
+      + '<span class="legend-dot" style="background:' + m.border + ';"></span>'
+      + m.key + '</span>';
+  });
+  lgHtml += '<span class="legend-note">행 1개 = 환자 1건</span>';
+  document.getElementById('legendRow').innerHTML = lgHtml;
+
+  /* ── Chart.js 히스토그램 ── */
+  new Chart(document.getElementById('histChart'), {
+    type: 'bar',
+    data: {
+      labels: BIN_LABELS,
+      datasets: MONTHS.map(function(m){
+        return {
+          label: m.key,
+          data: m.pct,
+          backgroundColor: m.color,
+          borderColor: m.border,
+          borderWidth: 1,
+          borderRadius: 3
+        };
+      })
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              var m = MONTHS[ctx.datasetIndex];
+              return m.key + ': ' + ctx.parsed.y.toFixed(1) + '% (' + m.cnt[ctx.dataIndex] + '건)';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: 'Pretendard', size: 12 }, color: '#808080', autoSkip: false }
+        },
+        y: {
+          grid: { color: 'rgba(26,22,18,0.06)' },
+          ticks: {
+            font: { family: 'Pretendard', size: 11 },
+            color: '#808080',
+            callback: function(v){ return v + '%'; }
+          },
+          max: 60,
+          beginAtZero: true,
+          title: { display: true, text: '비율 (%)', font: { family: 'Pretendard', size: 11 }, color: '#B4B4B4' }
+        }
+      }
+    }
+  });
+
+  /* ── 요약 테이블 ── */
+  var tHtml = '<table class="summary-table">';
+  tHtml += '<tr><th>구간</th>';
+  MONTHS.forEach(function(m){ tHtml += '<th>' + m.key + '</th>'; });
+  tHtml += '</tr>';
+
+  BIN_LABELS.forEach(function(bin, bi){
+    tHtml += '<tr><td>' + bin + '</td>';
+    MONTHS.forEach(function(m, mi){
+      var v = m.pct[bi];
+      var cls = '';
+      if (bi === 3 || bi === 4) {
+        if (mi >= 3 && v > 20) cls = 'up';
+      }
+      if (bi === 0) {
+        if (mi >= 3) cls = 'down';
+      }
+      tHtml += '<td class="' + cls + '">'
+        + v.toFixed(1) + '%'
+        + ' <span style="color:#B4B4B4;font-size:10px;">(' + m.cnt[bi] + ')</span></td>';
+    });
+    tHtml += '</tr>';
+  });
+  tHtml += '</table>';
+  document.getElementById('tableWrap').innerHTML = tHtml;
+
+  /* ── 핵심 인사이트 ── */
+  var insights = [
+    {
+      body: '<strong>1~3월은 평균 치식수가 8.92~8.98치로 사실상 보합</strong>이었으나, <strong>4월(9.86치)과 5월(10.11치)에서 계단식으로 상승</strong>했습니다. 중앙값은 5개월 모두 8치로 동일해, 분포의 중심이 이동한 게 아닌 <strong>오른쪽 꼬리가 두터워진 구조적 변화</strong>입니다.'
+    },
+    {
+      body: '<strong>저량(1-4치) 케이스가 1~3월 평균 21%에서 4~5월 14~15%로 감소</strong>했습니다. 시술 수요 자체가 줄어든 환경에서 소량 케이스가 먼저 이탈한 것으로 해석할 수 있으며, 이로 인해 분모(상담 건수)가 분자(총 치식수)보다 더 빠르게 줄어 <strong>인당 평균이 역설적으로 상승</strong>했습니다.'
+    },
+    {
+      body: '<strong>13-16치 구간 비중이 1월 18.1% → 4월 26.8%로 지속 확대</strong>되었고, <strong>17-20치 구간도 1월 9.1% → 5월 12.2%로 증가</strong>했습니다. 4~5월에 상대적으로 고량 시술 케이스의 비중이 늘어났음을 의미합니다. <span class="tag">구조적 상승</span>'
+    },
+    {
+      body: '아웃라이어(극단값) 영향은 없습니다. <strong>최댓값은 1~3월 22치, 4~5월 21치로 감소</strong>했으며, 이는 생물학적 상한(28~32치) 대비 충분히 정상 범위입니다. 즉 평균 상승은 극단치가 아닌 <strong>중고량 케이스 전반의 소폭 상향</strong>에 의한 것입니다.'
+    },
+    {
+      body: '시술별로는 <strong>MARTH(9.4 → 13.2치)</strong>와 <strong>WH(9.3 → 10.8치)</strong>의 상승폭이 크고, <strong>BS(8.8 → 9.6치)</strong>는 가장 큰 모수(n=537/252)에서도 일관되게 상승해 구조적 변화를 뒷받침합니다. BL은 13.8 → 12.4치로 소폭 하락. 추가로 <strong>4월 MARTH 치식수 급등 맥락</strong>을 병행 확인하기를 권장합니다.'
+    }
+  ];
+
+  var ilHtml = '';
+  insights.forEach(function(ins, i){
+    ilHtml += '<li class="insight-item">'
+      + '<div class="insight-num">' + (i+1) + '</div>'
+      + '<div class="insight-body">' + ins.body + '</div>'
+      + '</li>';
+  });
+  document.getElementById('insightList').innerHTML = ilHtml;
+
+})();
+</script>
+</body>
+</html>
