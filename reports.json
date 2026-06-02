@@ -1,14 +1,14 @@
 [
   {
     "date": "2026-06-02",
-    "title": "기간별 수집 현황 (R30~R35)",
-    "description": "2026.02.01 ~ 2026.05.31 기간 R30~R35 수집 데이터 분석",
-    "path": "reports/2026-06-02/period_collection_r30r35_final.html"
-  },
-  {
-    "date": "2026-06-02",
     "title": "2605 월간 데이터 보고서 — TU치과",
     "description": "TÜ치과 2025년 5월 월간 데이터 보고. 전체·국내·해외 채널별 핵심 지표 및 종합 인사이트.",
     "path": "reports/2026-06-02/2605_monthly_report.html"
+  },
+  {
+    "date": "2026-06-02",
+    "title": "기간별 수집 현황 (R30~R35)",
+    "description": "2026.02.01 ~ 2026.05.31 기간 R30~R35 수집 데이터 분석",
+    "path": "reports/2026-06-02/period_collection_r30r35_final.html"
   }
 ]
