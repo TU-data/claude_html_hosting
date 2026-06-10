@@ -359,8 +359,20 @@ function cRate(w){ return w.denom>0 ? w.consent/w.denom*100 : 0; }
 
 function p3avg(key){ return (W[0][key]+W[1][key]+W[2][key])/3; }
 var p3 = {total:p3avg('total'), dom:p3avg('dom'), ovs:p3avg('ovs'), jpn:p3avg('jpn'),
-          consult:p3avg('consult'), consent:p3avg('consent'), arp:p3avg('arp')};
-var p3Rate = (cRate(W[0])+cRate(W[1])+cRate(W[2]))/3;
+          consult:p3avg('consult'), consent:p3avg('consent')};
+
+/* ── 동의율·객단가: 지침 정의대로 3주 합산 기준 BQ 직접 집계 ── */
+/* 동의율 = 3주 합산 동의수 / 3주 합산 denom */
+var p3Rate     = 150/198*100;   // 전체  75.8%
+var p3RateDOM  = 121/158*100;   // 국내  76.6%
+var p3RateOVS  =  29/40*100;    // 해외  72.5%
+var p3RateJPN  =  15/17*100;    // 일본  88.2%
+/* 객단가 = 3주 전체 동의건 AVG(arp_base_amount) */
+var p3ARP      = 7828159;       // 전체  783만
+var p3ARPDOM   = 6805827;       // 국내  681만
+var p3ARPOVS   = 12093752;      // 해외  1,209만
+var p3ARPJPN   = 12435267;      // 일본  1,244만
+
 var curr = W[3], prev1 = W[2];
 var currRate = cRate(curr), prevRate = cRate(prev1);
 
@@ -369,7 +381,7 @@ var scDef = [
   {label:'총 매출',  cv:curr.total,   bv:p3.total,   fmt:a억},
   {label:'상담수',   cv:curr.consult, bv:p3.consult, fmt:function(v){return Math.round(v)+'건';}},
   {label:'동의수',   cv:curr.consent, bv:p3.consent, fmt:function(v){return Math.round(v)+'건';}},
-  {label:'객단가',   cv:curr.arp,     bv:p3.arp,     fmt:man}
+  {label:'객단가',   cv:curr.arp,     bv:p3ARP,     fmt:man}
 ];
 var scH='';
 scDef.forEach(function(s){
@@ -433,33 +445,33 @@ function p3avgArr(arr, key){ return (arr[0][key]+arr[1][key]+arr[2][key])/3; }
 function buildWeekTable(seg){
   var rows='';
   if(seg==='all'){
-    rows+=buildWeekRow('총 매출',    W.map(function(w){return a억(w.total);}), curr.total, prev1.total, p3.total, a억);
-    rows+=buildWeekRow('국내 매출',  W.map(function(w){return a억(w.dom);}),   curr.dom,   prev1.dom,   p3.dom,   a억);
-    rows+=buildWeekRow('해외 매출',  W.map(function(w){return a억(w.ovs);}),   curr.ovs,   prev1.ovs,   p3.ovs,   a억);
-    rows+=buildWeekRow('일본 매출',  W.map(function(w){return a억(w.jpn);}),   curr.jpn,   prev1.jpn,   p3.jpn,   a억);
+    rows+=buildWeekRow('총 매출',    W.map(function(w){return a억(w.total);}), curr.total, prev1.total, p3.total,   a억);
+    rows+=buildWeekRow('국내 매출',  W.map(function(w){return a억(w.dom);}),   curr.dom,   prev1.dom,   p3.dom,     a억);
+    rows+=buildWeekRow('해외 매출',  W.map(function(w){return a억(w.ovs);}),   curr.ovs,   prev1.ovs,   p3.ovs,     a억);
+    rows+=buildWeekRow('일본 매출',  W.map(function(w){return a억(w.jpn);}),   curr.jpn,   prev1.jpn,   p3.jpn,     a억);
     rows+=buildWeekRow('상담수',     W.map(function(w){return w.consult+'건';}),curr.consult,prev1.consult,p3.consult,function(v){return Math.round(v)+'건';});
     rows+=buildWeekRow('동의수',     W.map(function(w){return w.consent+'건';}),curr.consent,prev1.consent,p3.consent,function(v){return Math.round(v)+'건';});
     rows+=rateRow([cRate(W[0]),cRate(W[1]),cRate(W[2])], currRate, prevRate, p3Rate);
-    rows+=buildWeekRow('객단가',     W.map(function(w){return man(w.arp);}),    curr.arp,   prev1.arp,   p3.arp,   man);
+    rows+=buildWeekRow('객단가',     W.map(function(w){return man(w.arp);}),    curr.arp,   prev1.arp,   p3ARP,      man);
   } else if(seg==='dom'){
-    rows+=buildWeekRow('국내 매출',  W.map(function(w){return a억(w.dom);}),   curr.dom,   prev1.dom,   p3.dom,   a억);
+    rows+=buildWeekRow('국내 매출',  W.map(function(w){return a억(w.dom);}),   curr.dom,   prev1.dom,   p3.dom,     a억);
     rows+=buildWeekRow('상담수(국내)',W_DOM.map(function(w){return w.consult+'건';}),W_DOM[3].consult,W_DOM[2].consult,p3avgArr(W_DOM,'consult'),function(v){return Math.round(v)+'건';});
     rows+=buildWeekRow('동의수(국내)',W_DOM.map(function(w){return w.consent+'건';}),W_DOM[3].consent,W_DOM[2].consent,p3avgArr(W_DOM,'consent'),function(v){return Math.round(v)+'건';});
-    rows+=rateRow([cRate(W_DOM[0]),cRate(W_DOM[1]),cRate(W_DOM[2])],cRate(W_DOM[3]),cRate(W_DOM[2]),(cRate(W_DOM[0])+cRate(W_DOM[1])+cRate(W_DOM[2]))/3);
-    rows+=buildWeekRow('객단가(국내)',W_DOM.map(function(w){return man(w.arp);}),W_DOM[3].arp,W_DOM[2].arp,p3avgArr(W_DOM,'arp'),man);
+    rows+=rateRow([cRate(W_DOM[0]),cRate(W_DOM[1]),cRate(W_DOM[2])], cRate(W_DOM[3]), cRate(W_DOM[2]), p3RateDOM);
+    rows+=buildWeekRow('객단가(국내)',W_DOM.map(function(w){return man(w.arp);}),W_DOM[3].arp,W_DOM[2].arp,p3ARPDOM,man);
   } else if(seg==='jpn'){
-    rows+=buildWeekRow('일본 매출',   W.map(function(w){return a억(w.jpn);}),    curr.jpn,         prev1.jpn,         p3.jpn,                   a억);
+    rows+=buildWeekRow('일본 매출',   W.map(function(w){return a억(w.jpn);}),    curr.jpn,         prev1.jpn,         p3.jpn,   a억);
     rows+=buildWeekRow('상담수(일본)',W_JPN.map(function(w){return w.consult+'건';}),W_JPN[3].consult,W_JPN[2].consult,p3avgArr(W_JPN,'consult'),function(v){return Math.round(v)+'건';});
     rows+=buildWeekRow('동의수(일본)',W_JPN.map(function(w){return w.consent+'건';}),W_JPN[3].consent,W_JPN[2].consent,p3avgArr(W_JPN,'consent'),function(v){return Math.round(v)+'건';});
-    rows+=rateRow([cRate(W_JPN[0]),cRate(W_JPN[1]),cRate(W_JPN[2])],cRate(W_JPN[3]),cRate(W_JPN[2]),(cRate(W_JPN[0])+cRate(W_JPN[1])+cRate(W_JPN[2]))/3);
-    rows+=buildWeekRow('객단가(일본)',W_JPN.map(function(w){return man(w.arp);}),  W_JPN[3].arp,     W_JPN[2].arp,     p3avgArr(W_JPN,'arp'),    man);
+    rows+=rateRow([cRate(W_JPN[0]),cRate(W_JPN[1]),cRate(W_JPN[2])], cRate(W_JPN[3]), cRate(W_JPN[2]), p3RateJPN);
+    rows+=buildWeekRow('객단가(일본)',W_JPN.map(function(w){return man(w.arp);}),  W_JPN[3].arp,     W_JPN[2].arp,     p3ARPJPN, man);
   } else {
-    rows+=buildWeekRow('해외 매출',  W.map(function(w){return a억(w.ovs);}),   curr.ovs,   prev1.ovs,   p3.ovs,   a억);
-    rows+=buildWeekRow('일본 매출',  W.map(function(w){return a억(w.jpn);}),   curr.jpn,   prev1.jpn,   p3.jpn,   a억);
+    rows+=buildWeekRow('해외 매출',  W.map(function(w){return a억(w.ovs);}),   curr.ovs,   prev1.ovs,   p3.ovs,     a억);
+    rows+=buildWeekRow('일본 매출',  W.map(function(w){return a억(w.jpn);}),   curr.jpn,   prev1.jpn,   p3.jpn,     a억);
     rows+=buildWeekRow('상담수(해외)',W_OVS.map(function(w){return w.consult+'건';}),W_OVS[3].consult,W_OVS[2].consult,p3avgArr(W_OVS,'consult'),function(v){return Math.round(v)+'건';});
     rows+=buildWeekRow('동의수(해외)',W_OVS.map(function(w){return w.consent+'건';}),W_OVS[3].consent,W_OVS[2].consent,p3avgArr(W_OVS,'consent'),function(v){return Math.round(v)+'건';});
-    rows+=rateRow([cRate(W_OVS[0]),cRate(W_OVS[1]),cRate(W_OVS[2])],cRate(W_OVS[3]),cRate(W_OVS[2]),(cRate(W_OVS[0])+cRate(W_OVS[1])+cRate(W_OVS[2]))/3);
-    rows+=buildWeekRow('객단가(해외)',W_OVS.map(function(w){return man(w.arp);}),W_OVS[3].arp,W_OVS[2].arp,p3avgArr(W_OVS,'arp'),man);
+    rows+=rateRow([cRate(W_OVS[0]),cRate(W_OVS[1]),cRate(W_OVS[2])], cRate(W_OVS[3]), cRate(W_OVS[2]), p3RateOVS);
+    rows+=buildWeekRow('객단가(해외)',W_OVS.map(function(w){return man(w.arp);}),W_OVS[3].arp,W_OVS[2].arp,p3ARPOVS,man);
   }
   document.getElementById('week-table').innerHTML=
     '<table><thead><tr>'+WTH_COMMON+'</tr></thead><tbody>'+rows+'</tbody></table>';
