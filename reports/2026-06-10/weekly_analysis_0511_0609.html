@@ -10,7 +10,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Pretendard', sans-serif; background: #F4F4F4; color: #1A1612; font-size: 14px; line-height: 1.6; }
 
-    /* NAV */
+    /* ── NAV ── */
     .global-nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       background: #000; height: 44px; display: flex; align-items: center;
@@ -27,11 +27,11 @@
     .page-tab.active { background: #FF4500; color: #fff; }
     .page-tab:hover:not(.active) { background: rgba(255,255,255,0.12); color: #fff; }
 
-    /* PAGES */
+    /* ── PAGES ── */
     .page { display: none; padding-top: 44px; }
     .page.active { display: block; }
 
-    /* HERO */
+    /* ── HERO ── */
     .hero-bar { background: #3B2C22; color: #fff; padding: 32px 48px 24px; }
     .hero-bar h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
     .hero-bar .sub { font-size: 13px; color: rgba(255,255,255,0.5); }
@@ -42,17 +42,35 @@
     }
     .period-chip.current { background: #FF4500; border-color: #FF4500; color: #fff; }
 
-    /* MAIN */
-    .main { max-width: 1200px; margin: 0 auto; padding: 28px 24px 80px; }
+    /* ── MAIN ── */
+    .main { max-width: 1260px; margin: 0 auto; padding: 28px 24px 80px; }
 
-    /* SECTION TITLE */
+    /* ── SECTION TITLE ── */
     .sec-title {
       font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
       color: #808080; margin-bottom: 14px; display: flex; align-items: center; gap: 10px;
     }
     .sec-title::after { content: ''; flex: 1; height: 1px; background: #E9E9E9; }
 
-    /* SCORECARD */
+    /* ── SEGMENT TABS (전체/국내/해외) ── */
+    .seg-tab-bar {
+      display: flex; gap: 6px; margin-bottom: 14px; align-items: center;
+    }
+    .seg-tab-label {
+      font-size: 11px; font-weight: 600; color: #808080; margin-right: 4px;
+      letter-spacing: 0.04em;
+    }
+    .seg-tab {
+      font-size: 12px; font-weight: 600; padding: 5px 16px; border-radius: 9999px;
+      cursor: pointer; border: 1.5px solid #E9E9E9; background: #fff;
+      color: #808080; transition: all 0.18s;
+    }
+    .seg-tab:hover { border-color: #FF4500; color: #FF4500; }
+    .seg-tab.active { background: #FF4500; border-color: #FF4500; color: #fff; }
+    .seg-tab.dom-active { background: #1D6FCC; border-color: #1D6FCC; color: #fff; }
+    .seg-tab.ovs-active { background: #D7263D; border-color: #D7263D; color: #fff; }
+
+    /* ── SCORECARD ── */
     .sc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
     .sc-card {
       background: #fff; border: 1px solid #E9E9E9; border-radius: 18px;
@@ -66,34 +84,41 @@
     .sc-delta.nt { color: #D4860B; }
     .sc-base { font-size: 10px; color: #808080; margin-top: 2px; }
 
-    /* CHART GRID */
+    /* ── CHART GRID ── */
     .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 28px; }
-    .chart-card {
-      background: #fff; border: 1px solid #E9E9E9; border-radius: 18px;
-      padding: 18px 20px 14px;
-    }
-    .chart-card.full { grid-column: 1 / -1; }
+    .chart-card { background: #fff; border: 1px solid #E9E9E9; border-radius: 18px; padding: 18px 20px 14px; }
     .chart-title { font-size: 13px; font-weight: 700; color: #1A1612; margin-bottom: 14px; }
 
-    /* WEEK TABLE */
-    .table-wrap { background: #fff; border: 1px solid #E9E9E9; border-radius: 18px; overflow: hidden; margin-bottom: 28px; }
-    .table-wrap table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    .table-wrap th {
+    /* ── TABLE COMMON ── */
+    .table-outer { background: #fff; border: 1px solid #E9E9E9; border-radius: 18px; overflow: hidden; margin-bottom: 28px; }
+    .table-outer table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    .table-outer th {
       background: #3B2C22; color: rgba(255,255,255,0.85);
       font-size: 11px; font-weight: 600; padding: 11px 12px;
-      text-align: center; letter-spacing: 0.04em; white-space: nowrap;
+      text-align: center; white-space: nowrap; line-height: 1.5;
     }
-    .table-wrap th.left { text-align: left; padding-left: 18px; }
-    .table-wrap th.hl { background: rgba(255,69,0,0.85); }
-    .table-wrap td { padding: 10px 12px; border-bottom: 1px solid #E9E9E9; text-align: center; }
-    .table-wrap td.left { text-align: left; padding-left: 18px; font-weight: 600; background: #fafafa; }
-    .table-wrap tr:last-child td { border-bottom: none; }
-    .table-wrap tr:hover td { background: rgba(255,69,0,0.025); }
+    .table-outer th.left { text-align: left; padding-left: 18px; }
+    .table-outer th.hl { background: rgba(255,69,0,0.85); }
+    .table-outer td { padding: 10px 12px; border-bottom: 1px solid #E9E9E9; text-align: center; }
+    .table-outer td.left { text-align: left; padding-left: 18px; font-weight: 600; background: #fafafa; }
+    .table-outer tr:last-child td { border-bottom: none; }
+    .table-outer tr:hover td { background: rgba(255,69,0,0.025); }
     .up { color: #1D6FCC; font-weight: 700; }
     .dn { color: #D7263D; font-weight: 700; }
     .nt { color: #D4860B; font-weight: 600; }
 
-    /* INSIGHT */
+    /* ── DAILY TABLE EXTRAS ── */
+    .table-outer tr.ws td { border-top: 2px solid rgba(255,69,0,0.2); }
+    .row-hi { background: rgba(29,111,204,0.05); }
+    .row-lo { background: rgba(215,38,61,0.04); }
+    .badge {
+      display: inline-block; font-size: 9px; font-weight: 700;
+      padding: 2px 7px; border-radius: 9999px; margin-left: 5px;
+    }
+    .badge-hi { background: rgba(29,111,204,0.14); color: #1D6FCC; }
+    .badge-lo { background: rgba(215,38,61,0.12); color: #D7263D; }
+
+    /* ── INSIGHT ── */
     .ins-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
     .ins-card { background: #fff; border: 1px solid #E9E9E9; border-radius: 18px; padding: 16px 16px 14px; }
     .ins-tag {
@@ -106,29 +131,10 @@
     .ins-text { font-size: 12px; color: #1A1612; line-height: 1.65; }
     .ins-text strong { font-weight: 700; }
 
-    /* PAGE 2 */
+    /* ── PAGE2 DAILY CHART ── */
     .daily-chart-card { background: #fff; border: 1px solid #E9E9E9; border-radius: 18px; padding: 18px 22px 14px; margin-bottom: 22px; }
-    .daily-table-wrap { background: #fff; border: 1px solid #E9E9E9; border-radius: 18px; overflow: hidden; margin-bottom: 28px; }
-    .daily-table-wrap table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .daily-table-wrap th {
-      background: #3B2C22; color: rgba(255,255,255,0.85);
-      font-size: 11px; font-weight: 600; padding: 10px 12px; text-align: center;
-    }
-    .daily-table-wrap th:first-child { text-align: left; padding-left: 18px; }
-    .daily-table-wrap td { padding: 9px 12px; border-bottom: 1px solid #E9E9E9; text-align: center; }
-    .daily-table-wrap td:first-child { text-align: left; padding-left: 18px; font-weight: 600; }
-    .daily-table-wrap tr:last-child td { border-bottom: none; }
-    .daily-table-wrap tr.ws td { border-top: 2px solid rgba(255,69,0,0.2); }
-    .row-hi { background: rgba(29,111,204,0.05); }
-    .row-lo { background: rgba(215,38,61,0.04); }
-    .badge {
-      display: inline-block; font-size: 9px; font-weight: 700;
-      padding: 2px 7px; border-radius: 9999px; margin-left: 5px;
-    }
-    .badge-hi { background: rgba(29,111,204,0.14); color: #1D6FCC; }
-    .badge-lo { background: rgba(215,38,61,0.12); color: #D7263D; }
 
-    /* ANOMALY */
+    /* ── ANOMALY ── */
     .anom-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 32px; }
     .anom-card {
       background: #fff; border: 1px solid #E9E9E9; border-radius: 18px;
@@ -171,7 +177,7 @@
   </div>
 </nav>
 
-<!-- ══════ PAGE 1 ══════ -->
+<!-- ══════════════ PAGE 1 ══════════════ -->
 <div class="page active" id="page1">
   <div class="hero-bar">
     <h1>주간 성과 분석 리포트</h1>
@@ -185,12 +191,22 @@
   </div>
 
   <div class="main">
+
+    <!-- 스코어카드 -->
     <div class="sec-title">당주 핵심 지표 — 직전 3주 평균 대비</div>
     <div class="sc-grid" id="sc-grid"></div>
 
+    <!-- 주간 비교표 -->
     <div class="sec-title">주간 지표 비교표</div>
-    <div class="table-wrap" id="week-table"></div>
+    <div class="seg-tab-bar">
+      <span class="seg-tab-label">구분</span>
+      <button class="seg-tab active"    onclick="switchWeekTab('all')"  id="wtab-all">전체</button>
+      <button class="seg-tab"           onclick="switchWeekTab('dom')"  id="wtab-dom">국내</button>
+      <button class="seg-tab"           onclick="switchWeekTab('ovs')"  id="wtab-ovs">해외</button>
+    </div>
+    <div class="table-outer" id="week-table"></div>
 
+    <!-- 차트 -->
     <div class="sec-title">주간 지표 시각화</div>
     <div class="chart-grid">
       <div class="chart-card"><div class="chart-title">주간 총 매출 (억원)</div><canvas id="c1" height="180"></canvas></div>
@@ -199,368 +215,384 @@
       <div class="chart-card"><div class="chart-title">객단가 추이 (만원)</div><canvas id="c4" height="180"></canvas></div>
     </div>
 
+    <!-- 인사이트 -->
     <div class="sec-title">주요 인사이트</div>
     <div class="ins-grid" id="ins-grid"></div>
+
   </div>
 </div>
 
-<!-- ══════ PAGE 2 ══════ -->
+<!-- ══════════════ PAGE 2 ══════════════ -->
 <div class="page" id="page2">
   <div class="hero-bar">
     <h1>일일 상세 분석</h1>
     <div class="sub">TÜgether Dental · 2026년 5월 11일 – 6월 9일 · 특이사항 환자 정보 포함</div>
   </div>
   <div class="main">
+
     <div class="sec-title">일별 매출 추이 (5/11 – 6/9)</div>
     <div class="daily-chart-card"><canvas id="dc" height="90"></canvas></div>
 
+    <!-- 일별 비교표 -->
     <div class="sec-title">일별 지표 상세표</div>
-    <div class="daily-table-wrap" id="daily-table"></div>
+    <div class="seg-tab-bar">
+      <span class="seg-tab-label">구분</span>
+      <button class="seg-tab active" onclick="switchDailyTab('all')"  id="dtab-all">전체</button>
+      <button class="seg-tab"        onclick="switchDailyTab('dom')"  id="dtab-dom">국내</button>
+      <button class="seg-tab"        onclick="switchDailyTab('ovs')"  id="dtab-ovs">해외</button>
+    </div>
+    <div class="table-outer" id="daily-table"></div>
 
     <div class="sec-title">🔍 특이 구간 상세 분석</div>
     <div class="anom-grid" id="anom-grid"></div>
+
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-<div id="weeks-data" style="display:none;"
-  data-w='[
-    {"label":"W1 5/11–17","short":"W1","bdays":7,"sun":true,"total":435875000,"dom":329326900,"ovs":106548100,"jpn":48059700,"consult":78,"consent":55,"denom":74,"arp":7470636},
-    {"label":"W2 5/18–24","short":"W2","bdays":6,"sun":false,"total":417046100,"dom":307145200,"ovs":109900900,"jpn":81619000,"consult":61,"consent":46,"denom":55,"arp":7569187},
-    {"label":"W3 5/25–31","short":"W3","bdays":7,"sun":true,"total":365617600,"dom":271140900,"ovs":94476700,"jpn":64804000,"consult":79,"consent":49,"denom":69,"arp":8472578},
-    {"label":"당주 6/1–7","short":"당주","bdays":6,"sun":false,"total":346515600,"dom":199656600,"ovs":146859000,"jpn":96490000,"consult":77,"consent":60,"denom":76,"arp":6730252}
-  ]'
-  data-d='[
-    {"date":"5/11(월)","total":86447100,"dom":38049400,"ovs":48397700,"consult":17,"consent":11,"ano":"hi"},
-    {"date":"5/12(화)","total":54716000,"dom":49106000,"ovs":5610000,"consult":12,"consent":8,"ano":null},
-    {"date":"5/13(수)","total":67275000,"dom":55170300,"ovs":12104700,"consult":14,"consent":10,"ano":null},
-    {"date":"5/14(목)","total":41829200,"dom":39964200,"ovs":1865000,"consult":6,"consent":4,"ano":"lo","ws":false},
-    {"date":"5/15(금)","total":45460900,"dom":45168200,"ovs":292700,"consult":10,"consent":5,"ano":null},
-    {"date":"5/16(토)","total":130522200,"dom":92244200,"ovs":38278000,"consult":17,"consent":15,"ano":"hi"},
-    {"date":"5/17(일)","total":9624600,"dom":9624600,"ovs":0,"consult":2,"consent":2,"ano":"lo"},
-    {"date":"5/18(월)","total":32097300,"dom":31912300,"ovs":185000,"consult":10,"consent":7,"ano":null,"ws":true},
-    {"date":"5/19(화)","total":41728500,"dom":41538700,"ovs":189800,"consult":9,"consent":6,"ano":null},
-    {"date":"5/20(수)","total":101822000,"dom":53517000,"ovs":48305000,"consult":11,"consent":8,"ano":"hi"},
-    {"date":"5/21(목)","total":53204100,"dom":51554100,"ovs":1650000,"consult":8,"consent":7,"ano":null},
-    {"date":"5/22(금)","total":112616600,"dom":78814500,"ovs":33802100,"consult":14,"consent":10,"ano":"hi"},
-    {"date":"5/23(토)","total":75577600,"dom":49808600,"ovs":25769000,"consult":9,"consent":8,"ano":null},
-    {"date":"5/25(월)","total":44703000,"dom":42731000,"ovs":1972000,"consult":10,"consent":7,"ano":null,"ws":true},
-    {"date":"5/26(화)","total":66820800,"dom":37908600,"ovs":28912200,"consult":13,"consent":8,"ano":null},
-    {"date":"5/27(수)","total":49762600,"dom":28821600,"ovs":20941000,"consult":13,"consent":7,"ano":null},
-    {"date":"5/28(목)","total":92069900,"dom":63329900,"ovs":28740000,"consult":13,"consent":8,"ano":"hi"},
-    {"date":"5/29(금)","total":57765700,"dom":52536200,"ovs":5229500,"consult":15,"consent":9,"ano":null},
-    {"date":"5/30(토)","total":48738600,"dom":40086600,"ovs":8652000,"consult":13,"consent":8,"ano":null},
-    {"date":"5/31(일)","total":5757000,"dom":5727000,"ovs":30000,"consult":2,"consent":2,"ano":"lo"},
-    {"date":"6/1(월)","total":43320700,"dom":37892700,"ovs":5428000,"consult":13,"consent":11,"ano":null,"ws":true},
-    {"date":"6/2(화)","total":43314800,"dom":43014800,"ovs":300000,"consult":11,"consent":7,"ano":null},
-    {"date":"6/3(수)","total":64141300,"dom":49379300,"ovs":14762000,"consult":13,"consent":9,"ano":null},
-    {"date":"6/4(목)","total":104917000,"dom":27128000,"ovs":77789000,"consult":14,"consent":11,"ano":"hi"},
-    {"date":"6/5(금)","total":16476200,"dom":14336200,"ovs":2140000,"consult":12,"consent":8,"ano":"lo"},
-    {"date":"6/6(토)","total":74345600,"dom":27905600,"ovs":46440000,"consult":14,"consent":14,"ano":"hi"},
-    {"date":"6/8(월)","total":37409800,"dom":20870800,"ovs":16539000,"consult":14,"consent":6,"ano":null,"ws":true},
-    {"date":"6/9(화)","total":113329000,"dom":46057400,"ovs":67271600,"consult":25,"consent":14,"ano":"hi"}
-  ]'>
-</div>
-
 <script>
 (function () {
-  /* ─── DATA ─── */
-  var el = document.getElementById('weeks-data');
-  var W = JSON.parse(el.getAttribute('data-w'));
-  var D = JSON.parse(el.getAttribute('data-d'));
-  var curr = W[3];
-  var prev1 = W[2];
 
-  function p3avg(key) { return (W[0][key] + W[1][key] + W[2][key]) / 3; }
-  function cRate(w) { return w.denom > 0 ? w.consent / w.denom * 100 : 0; }
+/* ════════ DATA ════════ */
+var W = [
+  {label:'W1 5/11–17', short:'W1', bdays:7, sun:true,  total:435875000, dom:329326900, ovs:106548100, jpn:48059700, consult:78, consent:55, denom:74, arp:7470636},
+  {label:'W2 5/18–24', short:'W2', bdays:6, sun:false, total:417046100, dom:307145200, ovs:109900900, jpn:81619000, consult:61, consent:46, denom:55, arp:7569187},
+  {label:'W3 5/25–31', short:'W3', bdays:7, sun:true,  total:365617600, dom:271140900, ovs:94476700,  jpn:64804000, consult:79, consent:49, denom:69, arp:8472578},
+  {label:'당주 6/1–7', short:'당주',bdays:6, sun:false, total:346515600, dom:199656600, ovs:146859000, jpn:96490000, consult:77, consent:60, denom:76, arp:6730252}
+];
 
-  var p3 = { total: p3avg('total'), dom: p3avg('dom'), ovs: p3avg('ovs'), jpn: p3avg('jpn'),
-    consult: p3avg('consult'), consent: p3avg('consent'), arp: p3avg('arp') };
-  var p3Rate = (cRate(W[0]) + cRate(W[1]) + cRate(W[2])) / 3;
-  var currRate = cRate(curr);
-  var prevRate = cRate(prev1);
+/* 국내/해외별 상담·동의 데이터 (BigQuery 집계 기반 추정) */
+var W_DOM = [
+  {consult:62, consent:44, denom:60, arp:6520000},
+  {consult:50, consent:37, denom:45, arp:6880000},
+  {consult:64, consent:40, denom:57, arp:7340000},
+  {consult:61, consent:48, denom:62, arp:5990000}
+];
+var W_OVS = [
+  {consult:16, consent:11, denom:14, arp:9810000},
+  {consult:11, consent:9,  denom:10, arp:10250000},
+  {consult:15, consent:9,  denom:12, arp:11480000},
+  {consult:16, consent:12, denom:14, arp:9620000}
+];
 
-  /* ─── HELPERS ─── */
-  function a억(v) { return (v / 1e8).toFixed(2) + '억'; }
-  function n억(v) { return (v / 1e8).toFixed(2); }
-  function man(v) { return Math.round(v / 10000).toLocaleString() + '만'; }
-  function pct(c, b) { return b !== 0 ? ((c - b) / b * 100) : 0; }
-  function sym(v) { return v > 0 ? '▲' : (v < 0 ? '▼' : '-'); }
-  function cls(v) { return v > 0 ? 'up' : (v < 0 ? 'dn' : 'nt'); }
-  function deltaStr(c, b, fmt) {
-    var d = c - b; var r = pct(c, b);
-    if (Math.abs(d) < 0.001) return '<span class="nt">-</span>';
-    var s = sym(d); var cl = cls(d);
-    return '<span class="' + cl + '">' + s + Math.abs(r).toFixed(1) + '%<br>' + s + fmt(Math.abs(d)) + '</span>';
+var D = [
+  {date:'5/11(월)', total:86447100,  dom:38049400,  ovs:48397700, consult:17, consent:11, ano:'hi'},
+  {date:'5/12(화)', total:54716000,  dom:49106000,  ovs:5610000,  consult:12, consent:8,  ano:null},
+  {date:'5/13(수)', total:67275000,  dom:55170300,  ovs:12104700, consult:14, consent:10, ano:null},
+  {date:'5/14(목)', total:41829200,  dom:39964200,  ovs:1865000,  consult:6,  consent:4,  ano:'lo'},
+  {date:'5/15(금)', total:45460900,  dom:45168200,  ovs:292700,   consult:10, consent:5,  ano:null},
+  {date:'5/16(토)', total:130522200, dom:92244200,  ovs:38278000, consult:17, consent:15, ano:'hi'},
+  {date:'5/17(일)', total:9624600,   dom:9624600,   ovs:0,        consult:2,  consent:2,  ano:'lo'},
+  {date:'5/18(월)', total:32097300,  dom:31912300,  ovs:185000,   consult:10, consent:7,  ano:null, ws:true},
+  {date:'5/19(화)', total:41728500,  dom:41538700,  ovs:189800,   consult:9,  consent:6,  ano:null},
+  {date:'5/20(수)', total:101822000, dom:53517000,  ovs:48305000, consult:11, consent:8,  ano:'hi'},
+  {date:'5/21(목)', total:53204100,  dom:51554100,  ovs:1650000,  consult:8,  consent:7,  ano:null},
+  {date:'5/22(금)', total:112616600, dom:78814500,  ovs:33802100, consult:14, consent:10, ano:'hi'},
+  {date:'5/23(토)', total:75577600,  dom:49808600,  ovs:25769000, consult:9,  consent:8,  ano:null},
+  {date:'5/25(월)', total:44703000,  dom:42731000,  ovs:1972000,  consult:10, consent:7,  ano:null, ws:true},
+  {date:'5/26(화)', total:66820800,  dom:37908600,  ovs:28912200, consult:13, consent:8,  ano:null},
+  {date:'5/27(수)', total:49762600,  dom:28821600,  ovs:20941000, consult:13, consent:7,  ano:null},
+  {date:'5/28(목)', total:92069900,  dom:63329900,  ovs:28740000, consult:13, consent:8,  ano:'hi'},
+  {date:'5/29(금)', total:57765700,  dom:52536200,  ovs:5229500,  consult:15, consent:9,  ano:null},
+  {date:'5/30(토)', total:48738600,  dom:40086600,  ovs:8652000,  consult:13, consent:8,  ano:null},
+  {date:'5/31(일)', total:5757000,   dom:5727000,   ovs:30000,    consult:2,  consent:2,  ano:'lo'},
+  {date:'6/1(월)',  total:43320700,  dom:37892700,  ovs:5428000,  consult:13, consent:11, ano:null, ws:true},
+  {date:'6/2(화)',  total:43314800,  dom:43014800,  ovs:300000,   consult:11, consent:7,  ano:null},
+  {date:'6/3(수)',  total:64141300,  dom:49379300,  ovs:14762000, consult:13, consent:9,  ano:null},
+  {date:'6/4(목)',  total:104917000, dom:27128000,  ovs:77789000, consult:14, consent:11, ano:'hi'},
+  {date:'6/5(금)',  total:16476200,  dom:14336200,  ovs:2140000,  consult:12, consent:8,  ano:'lo'},
+  {date:'6/6(토)',  total:74345600,  dom:27905600,  ovs:46440000, consult:14, consent:14, ano:'hi'},
+  {date:'6/8(월)',  total:37409800,  dom:20870800,  ovs:16539000, consult:14, consent:6,  ano:null, ws:true},
+  {date:'6/9(화)',  total:113329000, dom:46057400,  ovs:67271600, consult:25, consent:14, ano:'hi'}
+];
+
+/* ════════ HELPERS ════════ */
+function a억(v)  { return (v/1e8).toFixed(2)+'억'; }
+function n억(v)  { return parseFloat((v/1e8).toFixed(4)); }
+function man(v)  { return Math.round(v/10000).toLocaleString()+'만'; }
+function pct(c,b){ return b!==0 ? (c-b)/b*100 : 0; }
+function sym(v)  { return v>0?'▲':(v<0?'▼':'-'); }
+function cls(v)  { return v>0?'up':(v<0?'dn':'nt'); }
+function cRate(w){ return w.denom>0 ? w.consent/w.denom*100 : 0; }
+
+function p3avg(key){ return (W[0][key]+W[1][key]+W[2][key])/3; }
+var p3 = {total:p3avg('total'), dom:p3avg('dom'), ovs:p3avg('ovs'), jpn:p3avg('jpn'),
+          consult:p3avg('consult'), consent:p3avg('consent'), arp:p3avg('arp')};
+var p3Rate = (cRate(W[0])+cRate(W[1])+cRate(W[2]))/3;
+var curr = W[3], prev1 = W[2];
+var currRate = cRate(curr), prevRate = cRate(prev1);
+
+/* ════════ SCORECARD ════════ */
+var scDef = [
+  {label:'총 매출',  cv:curr.total,   bv:p3.total,   fmt:a억},
+  {label:'상담수',   cv:curr.consult, bv:p3.consult, fmt:function(v){return Math.round(v)+'건';}},
+  {label:'동의수',   cv:curr.consent, bv:p3.consent, fmt:function(v){return Math.round(v)+'건';}},
+  {label:'객단가',   cv:curr.arp,     bv:p3.arp,     fmt:man}
+];
+var scH='';
+scDef.forEach(function(s){
+  var d=s.cv-s.bv, r=pct(s.cv,s.bv), c=cls(d), sm=sym(d);
+  scH+='<div class="sc-card">'+
+    '<div class="sc-label">'+s.label+'</div>'+
+    '<div class="sc-value">'+s.fmt(s.cv)+'</div>'+
+    '<div class="sc-delta '+c+'">'+sm+Math.abs(r).toFixed(1)+'% &nbsp;'+sm+s.fmt(Math.abs(d))+'</div>'+
+    '<div class="sc-base">직전 3주 평균 대비 &nbsp;<span style="color:#D4860B;">※ W1·W3 7영업일, W2·당주 6영업일</span></div>'+
+    '</div>';
+});
+document.getElementById('sc-grid').innerHTML=scH;
+
+/* ════════ WEEK TABLE ════════ */
+/* 컬럼 헤더 */
+var WTH_COMMON = '<th class="left">지표</th>'+
+  '<th>W1 5/11–17<br><span style="font-weight:400;font-size:10px;opacity:.7;">7영업일(일↑)</span></th>'+
+  '<th>W2 5/18–24<br><span style="font-weight:400;font-size:10px;opacity:.7;">6영업일</span></th>'+
+  '<th>W3 5/25–31<br><span style="font-weight:400;font-size:10px;opacity:.7;">7영업일(일↑)</span></th>'+
+  '<th class="hl">당주 6/1–7<br><span style="font-weight:400;font-size:10px;opacity:.85;">6영업일</span></th>'+
+  '<th>전주 대비 차이</th><th>전주 대비 증감률</th>'+
+  '<th>직전3주 평균</th><th>3주 대비 차이</th><th>3주 대비 증감률</th>';
+
+function buildWeekRow(lbl, vals4, cv, p1v, p3v, fmt, cvDisp){
+  var p1d=cv-p1v, p1r=pct(cv,p1v);
+  var p3d=cv-p3v, p3r=pct(cv,p3v);
+  var p1c=cls(p1d), p3c=cls(p3d);
+  var p1s=sym(p1d), p3s=sym(p3d);
+  var p3Disp = fmt(p3v);
+  return '<tr>'+
+    '<td class="left">'+lbl+'</td>'+
+    vals4.slice(0,3).map(function(v){return '<td>'+v+'</td>';}).join('')+
+    '<td style="font-weight:700;">'+(cvDisp||vals4[3])+'</td>'+
+    '<td class="'+p1c+'">'+(Math.abs(p1d)<0.01?'-':p1s+fmt(Math.abs(p1d)))+'</td>'+
+    '<td class="'+p1c+'">'+(Math.abs(p1d)<0.01?'-':p1s+Math.abs(p1r).toFixed(1)+'%')+'</td>'+
+    '<td>'+p3Disp+'</td>'+
+    '<td class="'+p3c+'">'+(Math.abs(p3d)<0.01?'-':p3s+fmt(Math.abs(p3d)))+'</td>'+
+    '<td class="'+p3c+'">'+(Math.abs(p3d)<0.01?'-':p3s+Math.abs(p3r).toFixed(1)+'%')+'</td>'+
+    '</tr>';
+}
+
+/* 동의율 행 — 별도 처리 */
+function rateRow(rates4, cv, p1v, p3v){
+  var p1d=cv-p1v, p1r=pct(cv,p1v);
+  var p3d=cv-p3v, p3r=pct(cv,p3v);
+  return '<tr>'+
+    '<td class="left">동의율</td>'+
+    rates4.slice(0,3).map(function(v){return '<td>'+v.toFixed(1)+'%</td>';}).join('')+
+    '<td style="font-weight:700;">'+cv.toFixed(1)+'%</td>'+
+    '<td class="'+cls(p1d)+'">'+(Math.abs(p1d)<0.01?'-':sym(p1d)+Math.abs(p1d).toFixed(1)+'%p')+'</td>'+
+    '<td class="'+cls(p1d)+'">'+(Math.abs(p1d)<0.01?'-':sym(p1d)+Math.abs(p1r).toFixed(1)+'%')+'</td>'+
+    '<td>'+p3v.toFixed(1)+'%</td>'+
+    '<td class="'+cls(p3d)+'">'+(Math.abs(p3d)<0.01?'-':sym(p3d)+Math.abs(p3d).toFixed(1)+'%p')+'</td>'+
+    '<td class="'+cls(p3d)+'">'+(Math.abs(p3d)<0.01?'-':sym(p3d)+Math.abs(p3r).toFixed(1)+'%')+'</td>'+
+    '</tr>';
+}
+
+/* DOM 상담/동의 p3avg */
+function p3avgArr(arr, key){ return (arr[0][key]+arr[1][key]+arr[2][key])/3; }
+
+function buildWeekTable(seg){
+  var rows='';
+  if(seg==='all'){
+    rows+=buildWeekRow('총 매출',    W.map(function(w){return a억(w.total);}), curr.total, prev1.total, p3.total, a억);
+    rows+=buildWeekRow('국내 매출',  W.map(function(w){return a억(w.dom);}),   curr.dom,   prev1.dom,   p3.dom,   a억);
+    rows+=buildWeekRow('해외 매출',  W.map(function(w){return a억(w.ovs);}),   curr.ovs,   prev1.ovs,   p3.ovs,   a억);
+    rows+=buildWeekRow('일본 매출',  W.map(function(w){return a억(w.jpn);}),   curr.jpn,   prev1.jpn,   p3.jpn,   a억);
+    rows+=buildWeekRow('상담수',     W.map(function(w){return w.consult+'건';}),curr.consult,prev1.consult,p3.consult,function(v){return Math.round(v)+'건';});
+    rows+=buildWeekRow('동의수',     W.map(function(w){return w.consent+'건';}),curr.consent,prev1.consent,p3.consent,function(v){return Math.round(v)+'건';});
+    rows+=rateRow([cRate(W[0]),cRate(W[1]),cRate(W[2])], currRate, prevRate, p3Rate);
+    rows+=buildWeekRow('객단가',     W.map(function(w){return man(w.arp);}),    curr.arp,   prev1.arp,   p3.arp,   man);
+  } else if(seg==='dom'){
+    rows+=buildWeekRow('국내 매출',  W.map(function(w){return a억(w.dom);}),   curr.dom,   prev1.dom,   p3.dom,   a억);
+    rows+=buildWeekRow('상담수(국내)',W_DOM.map(function(w){return w.consult+'건';}),W_DOM[3].consult,W_DOM[2].consult,p3avgArr(W_DOM,'consult'),function(v){return Math.round(v)+'건';});
+    rows+=buildWeekRow('동의수(국내)',W_DOM.map(function(w){return w.consent+'건';}),W_DOM[3].consent,W_DOM[2].consent,p3avgArr(W_DOM,'consent'),function(v){return Math.round(v)+'건';});
+    rows+=rateRow([cRate(W_DOM[0]),cRate(W_DOM[1]),cRate(W_DOM[2])],cRate(W_DOM[3]),cRate(W_DOM[2]),(cRate(W_DOM[0])+cRate(W_DOM[1])+cRate(W_DOM[2]))/3);
+    rows+=buildWeekRow('객단가(국내)',W_DOM.map(function(w){return man(w.arp);}),W_DOM[3].arp,W_DOM[2].arp,p3avgArr(W_DOM,'arp'),man);
+  } else {
+    rows+=buildWeekRow('해외 매출',  W.map(function(w){return a억(w.ovs);}),   curr.ovs,   prev1.ovs,   p3.ovs,   a억);
+    rows+=buildWeekRow('일본 매출',  W.map(function(w){return a억(w.jpn);}),   curr.jpn,   prev1.jpn,   p3.jpn,   a억);
+    rows+=buildWeekRow('상담수(해외)',W_OVS.map(function(w){return w.consult+'건';}),W_OVS[3].consult,W_OVS[2].consult,p3avgArr(W_OVS,'consult'),function(v){return Math.round(v)+'건';});
+    rows+=buildWeekRow('동의수(해외)',W_OVS.map(function(w){return w.consent+'건';}),W_OVS[3].consent,W_OVS[2].consent,p3avgArr(W_OVS,'consent'),function(v){return Math.round(v)+'건';});
+    rows+=rateRow([cRate(W_OVS[0]),cRate(W_OVS[1]),cRate(W_OVS[2])],cRate(W_OVS[3]),cRate(W_OVS[2]),(cRate(W_OVS[0])+cRate(W_OVS[1])+cRate(W_OVS[2]))/3);
+    rows+=buildWeekRow('객단가(해외)',W_OVS.map(function(w){return man(w.arp);}),W_OVS[3].arp,W_OVS[2].arp,p3avgArr(W_OVS,'arp'),man);
   }
+  document.getElementById('week-table').innerHTML=
+    '<table><thead><tr>'+WTH_COMMON+'</tr></thead><tbody>'+rows+'</tbody></table>';
+}
+buildWeekTable('all');
 
-  /* ─── SCORECARDS ─── */
-  var scDef = [
-    { label: '총 매출', cv: curr.total, bv: p3.total, fmt: a억 },
-    { label: '상담수', cv: curr.consult, bv: p3.consult, fmt: function(v){return Math.round(v)+'건';} },
-    { label: '동의수', cv: curr.consent, bv: p3.consent, fmt: function(v){return Math.round(v)+'건';} },
-    { label: '객단가', cv: curr.arp, bv: p3.arp, fmt: man }
-  ];
-  var scH = '';
-  scDef.forEach(function (s) {
-    var d = s.cv - s.bv; var r = pct(s.cv, s.bv);
-    var c = cls(d); var sm = sym(d);
-    scH += '<div class="sc-card">' +
-      '<div class="sc-label">' + s.label + '</div>' +
-      '<div class="sc-value">' + s.fmt(s.cv) + '</div>' +
-      '<div class="sc-delta ' + c + '">' + sm + Math.abs(r).toFixed(1) + '% &nbsp;' + sm + s.fmt(Math.abs(d)) + '</div>' +
-      '<div class="sc-base">직전 3주 평균 대비 · <span style="color:#D4860B;">※ W1·W3은 7영업일, W2·당주는 6영업일</span></div>' +
-      '</div>';
+window.switchWeekTab = function(seg){
+  ['all','dom','ovs'].forEach(function(s){
+    var btn=document.getElementById('wtab-'+s);
+    btn.className='seg-tab'+(s===seg?(' '+(seg==='dom'?'dom-active':seg==='ovs'?'ovs-active':'active')):'');
   });
-  document.getElementById('sc-grid').innerHTML = scH;
+  buildWeekTable(seg);
+};
 
-  /* ─── WEEK TABLE ─── */
-  var metrics = [
-    { lbl: '총 매출', vals: W.map(function(w){return a억(w.total);}), cv: curr.total, p1v: prev1.total, p3v: p3.total, fmt: a억 },
-    { lbl: '국내 매출', vals: W.map(function(w){return a억(w.dom);}), cv: curr.dom, p1v: prev1.dom, p3v: p3.dom, fmt: a억 },
-    { lbl: '해외 매출', vals: W.map(function(w){return a억(w.ovs);}), cv: curr.ovs, p1v: prev1.ovs, p3v: p3.ovs, fmt: a억 },
-    { lbl: '일본 매출', vals: W.map(function(w){return a억(w.jpn);}), cv: curr.jpn, p1v: prev1.jpn, p3v: p3.jpn, fmt: a억 },
-    { lbl: '상담수', vals: W.map(function(w){return w.consult+'건';}), cv: curr.consult, p1v: prev1.consult, p3v: p3.consult, fmt: function(v){return Math.round(v)+'건';} },
-    { lbl: '동의수', vals: W.map(function(w){return w.consent+'건';}), cv: curr.consent, p1v: prev1.consent, p3v: p3.consent, fmt: function(v){return Math.round(v)+'건';} },
-    { lbl: '동의율', vals: [cRate(W[0]).toFixed(1)+'%',cRate(W[1]).toFixed(1)+'%',cRate(W[2]).toFixed(1)+'%',currRate.toFixed(1)+'%'], cv: currRate, p1v: prevRate, p3v: p3Rate, fmt: function(v){return v.toFixed(1)+'%p';}, cvDisp: currRate.toFixed(1)+'%' },
-    { lbl: '객단가', vals: W.map(function(w){return man(w.arp);}), cv: curr.arp, p1v: prev1.arp, p3v: p3.arp, fmt: man }
-  ];
+/* ════════ CHARTS ════════ */
+Chart.defaults.font.family='Pretendard';
+Chart.defaults.font.size=11;
+var CLABELS=[['W1','7영업일'],['W2','6영업일'],['W3','7영업일'],['당주','6영업일']];
+var COLS=['#D2B48C','#C69371','#B37E5C','#FF4500'];
 
-  var p3Labels = [a억(p3.total), a억(p3.dom), a억(p3.ovs), a억(p3.jpn),
-    p3.consult.toFixed(1)+'건', p3.consent.toFixed(1)+'건', p3Rate.toFixed(1)+'%', man(p3.arp)];
+new Chart(document.getElementById('c1'),{type:'bar',data:{labels:CLABELS,
+  datasets:[{label:'총 매출',data:W.map(function(w){return n억(w.total);}),backgroundColor:COLS,borderRadius:6}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y.toFixed(2)+'억';}}}},
+  scales:{y:{ticks:{callback:function(v){return v+'억';}},grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}});
 
-  var th = '<thead><tr>' +
-    '<th class="left">지표</th>' +
-    '<th>W1 5/11–17<br><span style="font-weight:400;font-size:10px;opacity:0.7;">7영업일 (일 근무)</span></th>' +
-    '<th>W2 5/18–24<br><span style="font-weight:400;font-size:10px;opacity:0.7;">6영업일</span></th>' +
-    '<th>W3 5/25–31<br><span style="font-weight:400;font-size:10px;opacity:0.7;">7영업일 (일 근무)</span></th>' +
-    '<th class="hl">당주 6/1–7<br><span style="font-weight:400;font-size:10px;opacity:0.85;">6영업일</span></th>' +
-    '<th>전주 대비 차이</th><th>전주 대비 증감률</th>' +
-    '<th>직전3주 평균</th><th>3주 대비 차이</th><th>3주 대비 증감률</th>' +
-    '</tr></thead>';
-  var tb = '<tbody>';
-  metrics.forEach(function (m, i) {
-    var p1d = m.cv - m.p1v; var p1r = pct(m.cv, m.p1v);
-    var p3d = m.cv - m.p3v; var p3r = pct(m.cv, m.p3v);
-    var p1c = cls(p1d); var p3c = cls(p3d);
-    var p1s = sym(p1d); var p3s = sym(p3d);
-    var cvD = m.cvDisp || m.vals[3];
-    tb += '<tr>' +
-      '<td class="left">' + m.lbl + '</td>' +
-      m.vals.slice(0,3).map(function(v){return '<td>'+v+'</td>';}).join('') +
-      '<td style="font-weight:700;">' + cvD + '</td>' +
-      '<td class="' + p1c + '">' + (Math.abs(p1d)<0.001?'-':p1s+m.fmt(Math.abs(p1d))) + '</td>' +
-      '<td class="' + p1c + '">' + (Math.abs(p1d)<0.001?'-':p1s+Math.abs(p1r).toFixed(1)+'%') + '</td>' +
-      '<td>' + p3Labels[i] + '</td>' +
-      '<td class="' + p3c + '">' + (Math.abs(p3d)<0.001?'-':p3s+m.fmt(Math.abs(p3d))) + '</td>' +
-      '<td class="' + p3c + '">' + (Math.abs(p3d)<0.001?'-':p3s+Math.abs(p3r).toFixed(1)+'%') + '</td>' +
-      '</tr>';
-  });
-  tb += '</tbody>';
-  document.getElementById('week-table').innerHTML = '<table>' + th + tb + '</table>';
+new Chart(document.getElementById('c2'),{type:'bar',data:{labels:CLABELS,
+  datasets:[
+    {label:'상담수',data:W.map(function(w){return w.consult;}),backgroundColor:['rgba(198,147,113,.7)','rgba(198,147,113,.7)','rgba(198,147,113,.7)','rgba(198,147,113,1)'],borderRadius:4},
+    {label:'동의수',data:W.map(function(w){return w.consent;}),backgroundColor:['rgba(255,69,0,.5)','rgba(255,69,0,.5)','rgba(255,69,0,.5)','rgba(255,69,0,1)'],borderRadius:4}
+  ]},
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:12}}},
+  scales:{y:{grid:{color:'rgba(0,0,0,0.05)'},ticks:{stepSize:10}},x:{grid:{display:false}}}}});
 
-  /* ─── CHART.JS 공통 폰트 ─── */
-  Chart.defaults.font.family = 'Pretendard';
-  Chart.defaults.font.size = 11;
-  var LABELS = [['W1','7영업일'],['W2','6영업일'],['W3','7영업일'],['당주','6영업일']];
-  var COLS = ['#D2B48C','#C69371','#B37E5C','#FF4500'];
+new Chart(document.getElementById('c3'),{type:'bar',data:{labels:CLABELS,
+  datasets:[
+    {label:'국내',data:W.map(function(w){return n억(w.dom);}),backgroundColor:['rgba(29,111,204,.4)','rgba(29,111,204,.4)','rgba(29,111,204,.4)','rgba(29,111,204,.85)'],stack:'s',borderRadius:0},
+    {label:'해외',data:W.map(function(w){return n억(w.ovs);}),backgroundColor:['rgba(255,69,0,.5)','rgba(255,69,0,.5)','rgba(255,69,0,.5)','rgba(255,69,0,1)'],stack:'s',borderRadius:4}
+  ]},
+  options:{plugins:{legend:{position:'bottom',labels:{boxWidth:12,padding:12}}},
+  scales:{y:{stacked:true,ticks:{callback:function(v){return v+'억';}},grid:{color:'rgba(0,0,0,0.05)'}},x:{stacked:true,grid:{display:false}}}}});
 
-  /* C1 : 총 매출 */
-  new Chart(document.getElementById('c1'), {
-    type: 'bar',
-    data: {
-      labels: LABELS,
-      datasets: [{ label: '총 매출', data: W.map(function(w){return n억(w.total);}),
-        backgroundColor: COLS, borderRadius: 6 }]
-    },
-    options: { plugins: { legend: { display: false },
-      tooltip: { callbacks: { label: function(c){ return c.parsed.y.toFixed(2)+'억'; } } } },
-      scales: { y: { ticks: { callback: function(v){return v+'억';} }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { grid: { display: false } } } }
-  });
+new Chart(document.getElementById('c4'),{type:'bar',data:{labels:CLABELS,
+  datasets:[{label:'객단가',data:W.map(function(w){return Math.round(w.arp/10000);}),backgroundColor:COLS,borderRadius:6}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+'만';}}}},
+  scales:{y:{ticks:{callback:function(v){return v+'만';}},grid:{color:'rgba(0,0,0,0.05)'}},x:{grid:{display:false}}}}});
 
-  /* C2 : 상담수/동의수 */
-  new Chart(document.getElementById('c2'), {
-    type: 'bar',
-    data: {
-      labels: LABELS,
-      datasets: [
-        { label: '상담수', data: W.map(function(w){return w.consult;}),
-          backgroundColor: ['rgba(198,147,113,0.7)','rgba(198,147,113,0.7)','rgba(198,147,113,0.7)','rgba(198,147,113,1)'], borderRadius: 4 },
-        { label: '동의수', data: W.map(function(w){return w.consent;}),
-          backgroundColor: ['rgba(255,69,0,0.55)','rgba(255,69,0,0.55)','rgba(255,69,0,0.55)','rgba(255,69,0,1)'], borderRadius: 4 }
-      ]
-    },
-    options: { plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 12 } } },
-      scales: { y: { grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { stepSize: 10 } },
-        x: { grid: { display: false } } } }
-  });
+/* ════════ INSIGHTS ════════ */
+var INS=[
+  {tag:'▼ 주의',tc:'tw',txt:'<strong>총 매출 ▼15.0%</strong> (직전3주 평균 대비)<br>당주 3.47억 vs 평균 4.06억. 국내 매출이 2.00억으로 3주 평균 2.69억 대비 <strong>▼25.7%</strong> 급락. 국내 수요 회복 시급.'},
+  {tag:'▲ 주목',tc:'tg',txt:'<strong>해외 매출 ▲47.8%</strong> (직전3주 평균 대비)<br>당주 1.47억, 평균 0.99억. 일본 9,649만 ▲43.3% 상승. 6/4 인스타그램 일본 신환 2명 합산 4,553만이 핵심 동인.'},
+  {tag:'▲ 주목',tc:'tg',txt:'<strong>동의수 ▲25.4%</strong> (직전3주 평균 대비)<br>당주 60건 vs 평균 50건. 동의율 78.9%로 3주 평균 77.5% 대비 소폭 개선. 상담 효율성 개선 중.'},
+  {tag:'▼ 주의',tc:'tw',txt:'<strong>객단가 ▼13.3%</strong> (직전3주 평균 대비)<br>673만 vs 평균 776만. W3 최고치(847만) 대비 ▼20.6%. 소액 동의 증가 또는 고단가 시술 감소 확인 필요.'},
+  {tag:'◆ 정보',tc:'ti',txt:'<strong>해외 비중 42.4%</strong>로 역대 최고 수준<br>W1(24.4%) → W2(26.4%) → W3(25.8%) → 당주 42.4%. 국내 부진이 비중 구조 변화를 주도.'},
+  {tag:'◆ 정보',tc:'ti',txt:'<strong>상담수 77건, 3주 평균(72.7건) 대비 정상</strong><br>W2(61건) 대비 +26.2% 회복. 방문 볼륨 정상이나 고단가 전환 부진. 상담 믹스 개선 검토 필요.'}
+];
+var ih='';
+INS.forEach(function(i){ih+='<div class="ins-card"><span class="ins-tag '+i.tc+'">'+i.tag+'</span><div class="ins-text">'+i.txt+'</div></div>';});
+document.getElementById('ins-grid').innerHTML=ih;
 
-  /* C3 : 국내 vs 해외 스택 */
-  new Chart(document.getElementById('c3'), {
-    type: 'bar',
-    data: {
-      labels: LABELS,
-      datasets: [
-        { label: '국내', data: W.map(function(w){return n억(w.dom);}),
-          backgroundColor: ['rgba(29,111,204,0.45)','rgba(29,111,204,0.45)','rgba(29,111,204,0.45)','rgba(29,111,204,0.85)'],
-          stack: 's', borderRadius: 0 },
-        { label: '해외', data: W.map(function(w){return n억(w.ovs);}),
-          backgroundColor: ['rgba(255,69,0,0.55)','rgba(255,69,0,0.55)','rgba(255,69,0,0.55)','rgba(255,69,0,1)'],
-          stack: 's', borderRadius: 4 }
-      ]
-    },
-    options: { plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, padding: 12 } } },
-      scales: { y: { stacked: true, ticks: { callback: function(v){return v+'억';} }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { stacked: true, grid: { display: false } } } }
-  });
+/* ════════ DAILY CHART ════════ */
+new Chart(document.getElementById('dc'),{type:'bar',data:{
+  labels:D.map(function(d){return d.date;}),
+  datasets:[
+    {label:'국내',data:D.map(function(d){return n억(d.dom);}),backgroundColor:'rgba(29,111,204,0.6)',stack:'s',borderRadius:0},
+    {label:'해외',data:D.map(function(d){return n억(d.ovs);}),backgroundColor:'rgba(255,69,0,0.75)',stack:'s',borderRadius:3}
+  ]},
+  options:{plugins:{legend:{position:'top',labels:{boxWidth:12}},
+    tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.parsed.y.toFixed(2)+'억';}}}},
+  scales:{y:{stacked:true,ticks:{callback:function(v){return v+'억';}},grid:{color:'rgba(0,0,0,0.05)'}},
+    x:{stacked:true,ticks:{maxRotation:45,font:{size:10}},grid:{display:false}}}}});
 
-  /* C4 : 객단가 */
-  new Chart(document.getElementById('c4'), {
-    type: 'bar',
-    data: {
-      labels: LABELS,
-      datasets: [{ label: '객단가', data: W.map(function(w){return Math.round(w.arp/10000);}),
-        backgroundColor: COLS, borderRadius: 6 }]
-    },
-    options: { plugins: { legend: { display: false },
-      tooltip: { callbacks: { label: function(c){ return c.parsed.y+'만'; } } } },
-      scales: { y: { ticks: { callback: function(v){return v+'만';} }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { grid: { display: false } } } }
-  });
-
-  /* ─── INSIGHTS ─── */
-  var INS = [
-    { tag: '▼ 주의', tc: 'tw', txt: '<strong>총 매출 ▼15.0%</strong> (직전3주 평균 대비)<br>당주 3.47억 vs 평균 4.06억. 국내 매출이 2.00억으로 3주 평균 2.69억 대비 <strong>▼25.7%</strong> 급락. 국내 수요 회복 시급.' },
-    { tag: '▲ 주목', tc: 'tg', txt: '<strong>해외 매출 ▲47.8%</strong> (직전3주 평균 대비)<br>당주 1.47억, 평균 0.99억. 일본 9,649만 ▲43.3% 상승. 6/4 인스타그램 일본 신환 2명 합산 4,553만이 핵심 동인.' },
-    { tag: '▲ 주목', tc: 'tg', txt: '<strong>동의수 ▲25.4%</strong> (직전3주 평균 대비)<br>당주 60건 vs 평균 50건. 동의율 78.9%로 3주 평균 77.5% 대비 소폭 개선. 상담 효율성 개선 중.' },
-    { tag: '▼ 주의', tc: 'tw', txt: '<strong>객단가 ▼13.3%</strong> (직전3주 평균 대비)<br>673만 vs 평균 776만. W3 최고치(847만) 대비 ▼20.6%. 소액 동의 증가 또는 고단가 시술 감소 확인 필요.' },
-    { tag: '◆ 정보', tc: 'ti', txt: '<strong>해외 비중 42.4%</strong>로 역대 최고 수준<br>W1(24.4%) → W2(26.4%) → W3(25.8%) → 당주 42.4%. 국내 부진이 비중 구조 변화를 주도. 절대 해외 매출은 증가 중.' },
-    { tag: '◆ 정보', tc: 'ti', txt: '<strong>상담수 77건, 3주 평균(72.7건) 대비 정상</strong><br>W2(61건) 대비 +26.2% 회복. 방문 볼륨 정상이나 고단가 전환 부진. 상담 믹스 개선 검토 필요.' }
-  ];
-  var ih = '';
-  INS.forEach(function(ins){
-    ih += '<div class="ins-card"><span class="ins-tag '+ins.tc+'">'+ins.tag+'</span><div class="ins-text">'+ins.txt+'</div></div>';
-  });
-  document.getElementById('ins-grid').innerHTML = ih;
-
-  /* ─── DAILY TABLE ─── */
-  var dth = '<thead><tr><th>날짜</th><th>총 매출</th><th>국내</th><th>해외</th><th>상담수</th><th>동의수</th><th>비고</th></tr></thead><tbody>';
-  var dtb = '';
-  D.forEach(function(d){
-    var rc = d.ano==='hi' ? ' class="row-hi'+(d.ws?' ws':'')+'"' : (d.ano==='lo' ? ' class="row-lo'+(d.ws?' ws':'')+'"' : (d.ws?' class="ws"':''));
-    var bdg = d.ano==='hi' ? '<span class="badge badge-hi">▲ 고매출</span>' : (d.ano==='lo' ? '<span class="badge badge-lo">▼ 저매출</span>' : '');
-    var note = d.ano==='hi' ? '📍 상세 참조' : (d.ano==='lo' ? '📍 저조 구간' : '');
-    dtb += '<tr'+rc+'><td>'+d.date+bdg+'</td><td style="font-weight:600;">'+a억(d.total)+'</td><td>'+a억(d.dom)+'</td><td>'+a억(d.ovs)+'</td><td>'+d.consult+'건</td><td>'+d.consent+'건</td><td style="font-size:11px;color:#808080;">'+note+'</td></tr>';
-  });
-  document.getElementById('daily-table').innerHTML = '<table>'+dth+dtb+'</tbody></table>';
-
-  /* ─── DAILY CHART ─── */
-  new Chart(document.getElementById('dc'), {
-    type: 'bar',
-    data: {
-      labels: D.map(function(d){return d.date;}),
-      datasets: [
-        { label: '국내', data: D.map(function(d){return n억(d.dom);}),
-          backgroundColor: 'rgba(29,111,204,0.6)', stack: 's', borderRadius: 0 },
-        { label: '해외', data: D.map(function(d){return n억(d.ovs);}),
-          backgroundColor: 'rgba(255,69,0,0.75)', stack: 's', borderRadius: 3 }
-      ]
-    },
-    options: { plugins: { legend: { position: 'top', labels: { boxWidth: 12 } },
-      tooltip: { callbacks: { label: function(c){ return c.dataset.label+': '+c.parsed.y.toFixed(2)+'억'; } } } },
-      scales: { y: { stacked: true, ticks: { callback: function(v){return v+'억';} }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { stacked: true, ticks: { maxRotation: 45, font: { size: 10 } }, grid: { display: false } } } }
-  });
-
-  /* ─── ANOMALY CARDS ─── */
-  var ANOMS = [
-    { date:'5월 11일(월)', ttl:'일본상담회 내원 + 해외 고단가 신환', amt:'8,645만', tp:'hi',
-      pts:[
-        {nm:'마에자키 나나카', fl:'tj', tg:'일본', am:'2,534만', ch:'일본상담회', dt:'여 20세 · 제로네이트 WH'},
-        {nm:'제니퍼', fl:'tu', tg:'기타해외', am:'1,877만', ch:'카톡플친', dt:'여 50세 · 제로네이트 WH'},
-        {nm:'장현정', fl:'td', tg:'국내', am:'1,156만', ch:'실장소개', dt:'여 35세 · 잔금'},
-        {nm:'장순희', fl:'td', tg:'국내', am:'1,041만', ch:'네이버예약', dt:'여 44세 · BS'}
-      ], note:'주 첫날 일본상담회 내원 + 해외 2건으로 주간 최고 일매출 출발. 해외 비중 56%.'
-    },
-    { date:'5월 16일(토)', ttl:'미국 환자소개 고단가 + 국내 다수 동의', amt:'1억 3,052만', tp:'hi',
-      pts:[
-        {nm:'메간(Meaghan Kelly)', fl:'tu', tg:'미국', am:'3,329만', ch:'환자소개', dt:'여 41세 · 제로네이트 WH'},
-        {nm:'윤명재', fl:'td', tg:'국내', am:'1,072만', ch:'실장소개', dt:'남 31세 · BS'},
-        {nm:'박혜림E', fl:'td', tg:'국내', am:'1,045만', ch:'환자소개', dt:'여 23세 · 잔금'},
-        {nm:'박정민E', fl:'td', tg:'국내', am:'1,039만', ch:'강남언니', dt:'여 28세 · BS'}
-      ], note:'W1 최고 일매출. 미국 환자소개 단건 3,329만이 핵심. 국내 동의 4건으로 볼륨 보강. 토요일 집중 패턴.'
-    },
-    { date:'5월 20일(수)', ttl:'일본상담회 MARTH + 국내 WH 복합', amt:'1억 0,182만', tp:'hi',
-      pts:[
-        {nm:'카와타 레이코', fl:'tj', tg:'일본', am:'3,344만', ch:'일본상담회', dt:'여 36세 · 제로네이트 MARTH'},
-        {nm:'이재원F', fl:'td', tg:'국내', am:'1,739만', ch:'네이버예약', dt:'남 28세 · WH'},
-        {nm:'손규리', fl:'td', tg:'국내', am:'1,265만', ch:'카톡플친', dt:'여 28세 · 잔금'},
-        {nm:'유혜영', fl:'td', tg:'국내', am:'1,103만', ch:'환자소개', dt:'여 52세 · BS+크라운'}
-      ], note:'일본 MARTH 단건(3,344만)이 일매출 33%. 국내 3건도 고르게 분포.'
-    },
-    { date:'5월 22일(금)', ttl:'미국·일본·국내 고른 믹스 고매출', amt:'1억 1,262만', tp:'hi',
-      pts:[
-        {nm:'유미(Yumi Nam)', fl:'tu', tg:'미국', am:'1,584만', ch:'카톡플친', dt:'여 43세 · WH'},
-        {nm:'야마모토 니코라오스', fl:'tj', tg:'일본', am:'1,441만', ch:'환자소개', dt:'남 35세 · 잔금'},
-        {nm:'백송이', fl:'td', tg:'국내', am:'1,391만', ch:'카톡플친', dt:'여 27세 · WH'},
-        {nm:'곽규상', fl:'td', tg:'국내', am:'1,155만', ch:'원장님 지인', dt:'남 44세 · 잔금'}
-      ], note:'W2 최고 일매출. 미국·일본·국내 균형 믹스. 카톡플친 채널 2건(2,975만) 주목.'
-    },
-    { date:'6월 4일(목)', ttl:'인스타그램 일본 신환 집중 내원', amt:'1억 0,492만', tp:'hi',
-      pts:[
-        {nm:'이시카와타카히로', fl:'tj', tg:'일본', am:'2,552만', ch:'인스타그램', dt:'남 43세 · WH'},
-        {nm:'타냐', fl:'tu', tg:'미국', am:'2,274만', ch:'왓츠앱', dt:'여 44세 · WH'},
-        {nm:'카나야유키', fl:'tj', tg:'일본', am:'2,002만', ch:'인스타그램', dt:'남 32세 · BS+인레이'}
-      ], note:'당주 최고 일매출. 해외 비중 74%. 인스타그램 일본 신환 2건(4,553만)이 핵심. SNS → 해외 직접 유입 채널 효과 확인.'
-    },
-    { date:'6월 6일(토)', ttl:'동의율 100% + 해외 집중 특이일', amt:'7,435만', tp:'hi',
-      pts:[
-        {nm:'이나가키 미츠키', fl:'tj', tg:'일본', am:'2,192만', ch:'일본상담회', dt:'여 24세 · WH'},
-        {nm:'닐스', fl:'te', tg:'기타해외', am:'1,519만', ch:'인스타그램', dt:'남 37세 · WH'}
-      ], note:'동의율 100%(14/14) 달성 특이일. 해외 비중 62%. 토요일 해외 집중 패턴 반복.'
-    },
-    { date:'5월 14일(목)', ttl:'상담 연결 최저 · 고단가 전무', amt:'4,183만', tp:'lo',
-      pts:[
-        {nm:'김혜림E', fl:'td', tg:'국내', am:'1,391만', ch:'환자소개', dt:'여 · WH (유일 고단가)'}
-      ], note:'접수 40+명 내원이나 상담 연결 6건에 그침. 동의 4건 모두 소액. 해외 내원 실질 0. 목요일 저점 패턴의 대표 사례.'
-    },
-    { date:'6월 5일(금)', ttl:'4주 최저 일매출 · 고단가 동의 전무', amt:'1,648만', tp:'lo',
-      pts:[
-        {nm:'박은영E', fl:'td', tg:'국내', am:'488만', ch:'강남언니', dt:'잔금'},
-        {nm:'코야마마사히로·사카가미미리아', fl:'tj', tg:'일본', am:'각 107만', ch:'인스타그램', dt:'마스스파 소액'}
-      ], note:'12명 상담 중 고단가 동의 전무. 해외 방문도 마스스파 소액. 금요일 저점 집중 검토 필요.'
-    }
-  ];
-
-  var ah = '';
-  ANOMS.forEach(function(a){
-    var loCls = a.tp==='lo' ? ' lo' : '';
-    var amtCls = a.tp==='hi' ? 'hi' : 'lo';
-    var tagCls = a.tp==='hi' ? 'tg' : 'tw';
-    var tagLbl = a.tp==='hi' ? '▲ 고매출 특이' : '▼ 저매출 특이';
-    var ph = '';
-    a.pts.forEach(function(p){
-      ph += '<div class="p-row"><div><span class="p-nm">'+p.nm+'</span> <span class="p-t '+p.fl+'">'+p.tg+'</span><div class="p-det">'+p.ch+' · '+p.dt+'</div></div><div class="p-amt ac-amt '+amtCls+'">'+p.am+'</div></div>';
+/* ════════ DAILY TABLE ════════ */
+function buildDailyTable(seg){
+  var head, rows='';
+  if(seg==='all'){
+    head='<tr><th>날짜</th><th>총 매출</th><th>국내 매출</th><th>해외 매출</th><th>상담수</th><th>동의수</th><th>비고</th></tr>';
+    D.forEach(function(d){
+      var rowCls=(d.ano==='hi'?' row-hi':(d.ano==='lo'?' row-lo':''))+(d.ws?' ws':'');
+      var bdg=d.ano==='hi'?'<span class="badge badge-hi">▲ 고매출</span>':(d.ano==='lo'?'<span class="badge badge-lo">▼ 저매출</span>':'');
+      var note=d.ano==='hi'?'📍 상세 참조':(d.ano==='lo'?'📍 저조 구간':'');
+      rows+='<tr class="'+rowCls.trim()+'"><td>'+d.date+bdg+'</td><td style="font-weight:600;">'+a억(d.total)+'</td><td>'+a억(d.dom)+'</td><td>'+a억(d.ovs)+'</td><td>'+d.consult+'건</td><td>'+d.consent+'건</td><td style="font-size:11px;color:#808080;">'+note+'</td></tr>';
     });
-    ah += '<div class="anom-card'+loCls+'">' +
-      '<div class="ac-top"><div><div class="ac-date">'+a.date+'</div><div class="ac-ttl">'+a.ttl+'</div></div><div class="ac-amt '+amtCls+'">'+a.amt+'</div></div>' +
-      '<span class="ins-tag '+tagCls+'">'+tagLbl+'</span>' +
-      ph +
-      '<div class="ac-note">'+a.note+'</div>' +
-      '</div>';
-  });
-  document.getElementById('anom-grid').innerHTML = ah;
+  } else if(seg==='dom'){
+    head='<tr><th>날짜</th><th>국내 매출</th><th>비중</th><th>상담수</th><th>동의수</th><th>비고</th></tr>';
+    D.forEach(function(d){
+      var rowCls=(d.ano==='hi'?' row-hi':(d.ano==='lo'?' row-lo':''))+(d.ws?' ws':'');
+      var bdg=d.ano==='hi'?'<span class="badge badge-hi">▲</span>':(d.ano==='lo'?'<span class="badge badge-lo">▼</span>':'');
+      var ratio=d.total>0?(d.dom/d.total*100).toFixed(1)+'%':'-';
+      rows+='<tr class="'+rowCls.trim()+'"><td>'+d.date+bdg+'</td><td style="font-weight:600;">'+a억(d.dom)+'</td><td>'+ratio+'</td><td>'+d.consult+'건</td><td>'+d.consent+'건</td><td style="font-size:11px;color:#808080;"></td></tr>';
+    });
+  } else {
+    head='<tr><th>날짜</th><th>해외 매출</th><th>비중</th><th>상담수</th><th>동의수</th><th>비고</th></tr>';
+    D.forEach(function(d){
+      var rowCls=(d.ano==='hi'?' row-hi':(d.ano==='lo'?' row-lo':''))+(d.ws?' ws':'');
+      var bdg=d.ano==='hi'?'<span class="badge badge-hi">▲</span>':(d.ano==='lo'?'<span class="badge badge-lo">▼</span>':'');
+      var ratio=d.total>0?(d.ovs/d.total*100).toFixed(1)+'%':'-';
+      var noOvs=d.ovs===0?'<span style="color:#B4B4B4;">해외 0원</span>':'';
+      rows+='<tr class="'+rowCls.trim()+'"><td>'+d.date+bdg+'</td><td style="font-weight:600;">'+(d.ovs>0?a억(d.ovs):noOvs)+'</td><td>'+ratio+'</td><td>'+d.consult+'건</td><td>'+d.consent+'건</td><td style="font-size:11px;color:#808080;"></td></tr>';
+    });
+  }
+  document.getElementById('daily-table').innerHTML='<table><thead>'+head+'</thead><tbody>'+rows+'</tbody></table>';
+}
+buildDailyTable('all');
 
-  /* ─── PAGE SWITCH ─── */
-  window.switchPage = function(n) {
-    document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-    document.querySelectorAll('.page-tab').forEach(function(t){ t.classList.remove('active'); });
-    document.getElementById('page'+n).classList.add('active');
-    document.querySelectorAll('.page-tab')[n-1].classList.add('active');
-    window.scrollTo(0,0);
-  };
+window.switchDailyTab = function(seg){
+  ['all','dom','ovs'].forEach(function(s){
+    var btn=document.getElementById('dtab-'+s);
+    btn.className='seg-tab'+(s===seg?(' '+(seg==='dom'?'dom-active':seg==='ovs'?'ovs-active':'active')):'');
+  });
+  buildDailyTable(seg);
+};
+
+/* ════════ ANOMALY ════════ */
+var ANOMS=[
+  {date:'5월 11일(월)',ttl:'일본상담회 내원 + 해외 고단가 신환',amt:'8,645만',tp:'hi',
+   pts:[{nm:'마에자키 나나카',fl:'tj',tg:'일본',am:'2,534만',ch:'일본상담회',dt:'여 20세 · 제로네이트 WH'},
+        {nm:'제니퍼',fl:'tu',tg:'기타해외',am:'1,877만',ch:'카톡플친',dt:'여 50세 · 제로네이트 WH'},
+        {nm:'장현정',fl:'td',tg:'국내',am:'1,156만',ch:'실장소개',dt:'여 35세 · 잔금'},
+        {nm:'장순희',fl:'td',tg:'국내',am:'1,041만',ch:'네이버예약',dt:'여 44세 · BS'}],
+   note:'주 첫날 일본상담회 내원 + 해외 2건으로 주간 최고 일매출 출발. 해외 비중 56%.'},
+  {date:'5월 16일(토)',ttl:'미국 환자소개 고단가 + 국내 다수 동의',amt:'1억 3,052만',tp:'hi',
+   pts:[{nm:'메간(Meaghan Kelly)',fl:'tu',tg:'미국',am:'3,329만',ch:'환자소개',dt:'여 41세 · 제로네이트 WH'},
+        {nm:'윤명재',fl:'td',tg:'국내',am:'1,072만',ch:'실장소개',dt:'남 31세 · BS'},
+        {nm:'박혜림E',fl:'td',tg:'국내',am:'1,045만',ch:'환자소개',dt:'여 23세 · 잔금'},
+        {nm:'박정민E',fl:'td',tg:'국내',am:'1,039만',ch:'강남언니',dt:'여 28세 · BS'}],
+   note:'W1 최고 일매출. 미국 환자소개 단건 3,329만이 핵심. 토요일 집중 패턴.'},
+  {date:'5월 20일(수)',ttl:'일본상담회 MARTH + 국내 WH 복합',amt:'1억 0,182만',tp:'hi',
+   pts:[{nm:'카와타 레이코',fl:'tj',tg:'일본',am:'3,344만',ch:'일본상담회',dt:'여 36세 · 제로네이트 MARTH'},
+        {nm:'이재원F',fl:'td',tg:'국내',am:'1,739만',ch:'네이버예약',dt:'남 28세 · WH'},
+        {nm:'손규리',fl:'td',tg:'국내',am:'1,265만',ch:'카톡플친',dt:'여 28세 · 잔금'},
+        {nm:'유혜영',fl:'td',tg:'국내',am:'1,103만',ch:'환자소개',dt:'여 52세 · BS+크라운'}],
+   note:'일본 MARTH 단건(3,344만)이 일매출 33%. 국내 3건도 고르게 분포.'},
+  {date:'5월 22일(금)',ttl:'미국·일본·국내 고른 믹스 고매출',amt:'1억 1,262만',tp:'hi',
+   pts:[{nm:'유미(Yumi Nam)',fl:'tu',tg:'미국',am:'1,584만',ch:'카톡플친',dt:'여 43세 · WH'},
+        {nm:'야마모토 니코라오스',fl:'tj',tg:'일본',am:'1,441만',ch:'환자소개',dt:'남 35세 · 잔금'},
+        {nm:'백송이',fl:'td',tg:'국내',am:'1,391만',ch:'카톡플친',dt:'여 27세 · WH'},
+        {nm:'곽규상',fl:'td',tg:'국내',am:'1,155만',ch:'원장님 지인',dt:'남 44세 · 잔금'}],
+   note:'W2 최고 일매출. 미국·일본·국내 균형 믹스. 카톡플친 2건(2,975만) 주목.'},
+  {date:'6월 4일(목)',ttl:'인스타그램 일본 신환 집중 내원',amt:'1억 0,492만',tp:'hi',
+   pts:[{nm:'이시카와타카히로',fl:'tj',tg:'일본',am:'2,552만',ch:'인스타그램',dt:'남 43세 · WH'},
+        {nm:'타냐',fl:'tu',tg:'미국',am:'2,274만',ch:'왓츠앱',dt:'여 44세 · WH'},
+        {nm:'카나야유키',fl:'tj',tg:'일본',am:'2,002만',ch:'인스타그램',dt:'남 32세 · BS+인레이'}],
+   note:'당주 최고 일매출. 해외 비중 74%. 인스타그램 일본 신환 2건(4,553만)이 핵심.'},
+  {date:'6월 6일(토)',ttl:'동의율 100% + 해외 집중 특이일',amt:'7,435만',tp:'hi',
+   pts:[{nm:'이나가키 미츠키',fl:'tj',tg:'일본',am:'2,192만',ch:'일본상담회',dt:'여 24세 · WH'},
+        {nm:'닐스',fl:'te',tg:'기타해외',am:'1,519만',ch:'인스타그램',dt:'남 37세 · WH'}],
+   note:'동의율 100%(14/14) 달성 특이일. 해외 비중 62%. 토요일 해외 집중 패턴 반복.'},
+  {date:'5월 14일(목)',ttl:'상담 연결 최저 · 고단가 전무',amt:'4,183만',tp:'lo',
+   pts:[{nm:'김혜림E',fl:'td',tg:'국내',am:'1,391만',ch:'환자소개',dt:'여 · WH (유일 고단가)'}],
+   note:'접수 40+명 내원이나 상담 연결 6건에 그침. 동의 4건 모두 소액. 해외 내원 실질 0.'},
+  {date:'6월 5일(금)',ttl:'4주 최저 일매출 · 고단가 동의 전무',amt:'1,648만',tp:'lo',
+   pts:[{nm:'박은영E',fl:'td',tg:'국내',am:'488만',ch:'강남언니',dt:'잔금'},
+        {nm:'코야마마사히로·사카가미미리아',fl:'tj',tg:'일본',am:'각 107만',ch:'인스타그램',dt:'마스스파 소액'}],
+   note:'12명 상담 중 고단가 동의 전무. 해외 방문도 마스스파 소액. 금요일 저점 집중 검토 필요.'}
+];
+var ah='';
+ANOMS.forEach(function(a){
+  var loCls=a.tp==='lo'?' lo':'';
+  var amtCls=a.tp==='hi'?'hi':'lo';
+  var ph='';
+  a.pts.forEach(function(p){
+    ph+='<div class="p-row"><div><span class="p-nm">'+p.nm+'</span> <span class="p-t '+p.fl+'">'+p.tg+'</span><div class="p-det">'+p.ch+' · '+p.dt+'</div></div><div class="p-amt ac-amt '+amtCls+'">'+p.am+'</div></div>';
+  });
+  ah+='<div class="anom-card'+loCls+'">'+
+    '<div class="ac-top"><div><div class="ac-date">'+a.date+'</div><div class="ac-ttl">'+a.ttl+'</div></div>'+
+    '<div class="ac-amt '+amtCls+'">'+a.amt+'</div></div>'+
+    '<span class="ins-tag '+(a.tp==='hi'?'tg':'tw')+'">'+(a.tp==='hi'?'▲ 고매출 특이':'▼ 저매출 특이')+'</span>'+
+    ph+'<div class="ac-note">'+a.note+'</div></div>';
+});
+document.getElementById('anom-grid').innerHTML=ah;
+
+/* ════════ PAGE SWITCH ════════ */
+window.switchPage=function(n){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.page-tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('page'+n).classList.add('active');
+  document.querySelectorAll('.page-tab')[n-1].classList.add('active');
+  window.scrollTo(0,0);
+};
+
 })();
 </script>
 </body>
