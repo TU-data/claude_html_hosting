@@ -69,6 +69,7 @@
     .seg-tab.active { background: #FF4500; border-color: #FF4500; color: #fff; }
     .seg-tab.dom-active { background: #1D6FCC; border-color: #1D6FCC; color: #fff; }
     .seg-tab.ovs-active { background: #D7263D; border-color: #D7263D; color: #fff; }
+    .seg-tab.jpn-active { background: #E65100; border-color: #E65100; color: #fff; }
 
     /* ── SCORECARD ── */
     .sc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
@@ -203,6 +204,7 @@
       <button class="seg-tab active"    onclick="switchWeekTab('all')"  id="wtab-all">전체</button>
       <button class="seg-tab"           onclick="switchWeekTab('dom')"  id="wtab-dom">국내</button>
       <button class="seg-tab"           onclick="switchWeekTab('ovs')"  id="wtab-ovs">해외</button>
+      <button class="seg-tab"           onclick="switchWeekTab('jpn')"  id="wtab-jpn">🇯🇵 일본</button>
     </div>
     <div class="table-outer" id="week-table"></div>
 
@@ -240,6 +242,7 @@
       <button class="seg-tab active" onclick="switchDailyTab('all')"  id="dtab-all">전체</button>
       <button class="seg-tab"        onclick="switchDailyTab('dom')"  id="dtab-dom">국내</button>
       <button class="seg-tab"        onclick="switchDailyTab('ovs')"  id="dtab-ovs">해외</button>
+      <button class="seg-tab"        onclick="switchDailyTab('jpn')"  id="dtab-jpn">🇯🇵 일본</button>
     </div>
     <div class="table-outer" id="daily-table"></div>
 
@@ -274,6 +277,44 @@ var W_OVS = [
   {consult:11, consent:9,  denom:10, arp:10250000},
   {consult:15, consent:9,  denom:12, arp:11480000},
   {consult:16, consent:12, denom:14, arp:9620000}
+];
+/* 일본 주별 — BigQuery 직접 집계 */
+var W_JPN = [
+  {consult:6, consent:5, denom:6, arp:9537200},
+  {consult:6, consent:5, denom:6, arp:14814800},
+  {consult:6, consent:5, denom:5, arp:12953800},
+  {consult:9, consent:9, denom:9, arp:11606667}
+];
+/* 일본 일별 — BigQuery 직접 집계 */
+var D_JPN = [
+  {date:'5/11(월)', sales:25344000, consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'5/12(화)', sales:5610000,  consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'5/13(수)', sales:10124700, consult:3, consent:2, denom:3, ws:false, ano:null},
+  {date:'5/14(목)', sales:1760000,  consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'5/15(금)', sales:235000,   consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'5/16(토)', sales:4986000,  consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'5/17(일)', sales:0,        consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'5/18(월)', sales:0,        consult:0, consent:0, denom:0, ws:true,  ano:null},
+  {date:'5/19(화)', sales:35000,    consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'5/20(수)', sales:41470000, consult:3, consent:3, denom:3, ws:false, ano:'hi'},
+  {date:'5/21(목)', sales:0,        consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'5/22(금)', sales:14445000, consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'5/23(토)', sales:25669000, consult:3, consent:2, denom:3, ws:false, ano:null},
+  {date:'5/25(월)', sales:0,        consult:0, consent:0, denom:0, ws:true,  ano:null},
+  {date:'5/26(화)', sales:28380000, consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'5/27(수)', sales:14982000, consult:2, consent:2, denom:2, ws:false, ano:null},
+  {date:'5/28(목)', sales:13135000, consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'5/29(금)', sales:0,        consult:1, consent:0, denom:0, ws:false, ano:null},
+  {date:'5/30(토)', sales:8307000,  consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'5/31(일)', sales:0,        consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'6/1(월)',  sales:3823000,  consult:2, consent:2, denom:2, ws:true,  ano:null},
+  {date:'6/2(화)',  sales:0,        consult:0, consent:0, denom:0, ws:false, ano:null},
+  {date:'6/3(수)',  sales:13662000, consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'6/4(목)',  sales:54945000, consult:3, consent:3, denom:3, ws:false, ano:'hi'},
+  {date:'6/5(금)',  sales:2140000,  consult:2, consent:2, denom:2, ws:false, ano:null},
+  {date:'6/6(토)',  sales:21920000, consult:1, consent:1, denom:1, ws:false, ano:null},
+  {date:'6/8(월)',  sales:210000,   consult:0, consent:0, denom:0, ws:true,  ano:null},
+  {date:'6/9(화)',  sales:67236600, consult:5, consent:5, denom:5, ws:false, ano:'hi'}
 ];
 
 var D = [
@@ -406,6 +447,12 @@ function buildWeekTable(seg){
     rows+=buildWeekRow('동의수(국내)',W_DOM.map(function(w){return w.consent+'건';}),W_DOM[3].consent,W_DOM[2].consent,p3avgArr(W_DOM,'consent'),function(v){return Math.round(v)+'건';});
     rows+=rateRow([cRate(W_DOM[0]),cRate(W_DOM[1]),cRate(W_DOM[2])],cRate(W_DOM[3]),cRate(W_DOM[2]),(cRate(W_DOM[0])+cRate(W_DOM[1])+cRate(W_DOM[2]))/3);
     rows+=buildWeekRow('객단가(국내)',W_DOM.map(function(w){return man(w.arp);}),W_DOM[3].arp,W_DOM[2].arp,p3avgArr(W_DOM,'arp'),man);
+  } else if(seg==='jpn'){
+    rows+=buildWeekRow('일본 매출',   W.map(function(w){return a억(w.jpn);}),    curr.jpn,         prev1.jpn,         p3.jpn,                   a억);
+    rows+=buildWeekRow('상담수(일본)',W_JPN.map(function(w){return w.consult+'건';}),W_JPN[3].consult,W_JPN[2].consult,p3avgArr(W_JPN,'consult'),function(v){return Math.round(v)+'건';});
+    rows+=buildWeekRow('동의수(일본)',W_JPN.map(function(w){return w.consent+'건';}),W_JPN[3].consent,W_JPN[2].consent,p3avgArr(W_JPN,'consent'),function(v){return Math.round(v)+'건';});
+    rows+=rateRow([cRate(W_JPN[0]),cRate(W_JPN[1]),cRate(W_JPN[2])],cRate(W_JPN[3]),cRate(W_JPN[2]),(cRate(W_JPN[0])+cRate(W_JPN[1])+cRate(W_JPN[2]))/3);
+    rows+=buildWeekRow('객단가(일본)',W_JPN.map(function(w){return man(w.arp);}),  W_JPN[3].arp,     W_JPN[2].arp,     p3avgArr(W_JPN,'arp'),    man);
   } else {
     rows+=buildWeekRow('해외 매출',  W.map(function(w){return a억(w.ovs);}),   curr.ovs,   prev1.ovs,   p3.ovs,   a억);
     rows+=buildWeekRow('일본 매출',  W.map(function(w){return a억(w.jpn);}),   curr.jpn,   prev1.jpn,   p3.jpn,   a억);
@@ -420,9 +467,10 @@ function buildWeekTable(seg){
 buildWeekTable('all');
 
 window.switchWeekTab = function(seg){
-  ['all','dom','ovs'].forEach(function(s){
+  ['all','dom','ovs','jpn'].forEach(function(s){
     var btn=document.getElementById('wtab-'+s);
-    btn.className='seg-tab'+(s===seg?(' '+(seg==='dom'?'dom-active':seg==='ovs'?'ovs-active':'active')):'');
+    var ac = s===seg ? (' '+(seg==='dom'?'dom-active':seg==='ovs'?'ovs-active':seg==='jpn'?'jpn-active':'active')) : '';
+    btn.className='seg-tab'+ac;
   });
   buildWeekTable(seg);
 };
@@ -503,7 +551,7 @@ function buildDailyTable(seg){
       var ratio=d.total>0?(d.dom/d.total*100).toFixed(1)+'%':'-';
       rows+='<tr class="'+rowCls.trim()+'"><td>'+d.date+bdg+'</td><td style="font-weight:600;">'+a억(d.dom)+'</td><td>'+ratio+'</td><td>'+d.consult+'건</td><td>'+d.consent+'건</td><td style="font-size:11px;color:#808080;"></td></tr>';
     });
-  } else {
+  } else if(seg==='ovs'){
     head='<tr><th>날짜</th><th>해외 매출</th><th>비중</th><th>상담수</th><th>동의수</th><th>비고</th></tr>';
     D.forEach(function(d){
       var rowCls=(d.ano==='hi'?' row-hi':(d.ano==='lo'?' row-lo':''))+(d.ws?' ws':'');
@@ -512,15 +560,33 @@ function buildDailyTable(seg){
       var noOvs=d.ovs===0?'<span style="color:#B4B4B4;">해외 0원</span>':'';
       rows+='<tr class="'+rowCls.trim()+'"><td>'+d.date+bdg+'</td><td style="font-weight:600;">'+(d.ovs>0?a억(d.ovs):noOvs)+'</td><td>'+ratio+'</td><td>'+d.consult+'건</td><td>'+d.consent+'건</td><td style="font-size:11px;color:#808080;"></td></tr>';
     });
+  } else {
+    /* 일본 탭 */
+    head='<tr><th>날짜</th><th>일본 매출</th><th>해외 中 비중</th><th>상담수</th><th>동의수</th><th>동의율</th></tr>';
+    D_JPN.forEach(function(d, i){
+      var rowCls=(d.ano==='hi'?' row-hi':'')+(d.ws?' ws':'');
+      var bdg=d.ano==='hi'?'<span class="badge badge-hi">▲</span>':'';
+      var ratio = D[i].ovs>0 ? (d.sales/D[i].ovs*100).toFixed(1)+'%' : '-';
+      var rateDisp = d.denom>0 ? (d.consent/d.denom*100).toFixed(0)+'%' : '-';
+      var noSales = d.sales===0 ? '<span style="color:#B4B4B4;">-</span>' : a억(d.sales);
+      rows+='<tr class="'+rowCls.trim()+'"><td>'+d.date+bdg+'</td>'+
+        '<td style="font-weight:600;">'+ noSales +'</td>'+
+        '<td>'+ratio+'</td>'+
+        '<td>'+(d.consult>0?d.consult+'건':'<span style="color:#B4B4B4;">0</span>')+'</td>'+
+        '<td>'+(d.consent>0?d.consent+'건':'<span style="color:#B4B4B4;">0</span>')+'</td>'+
+        '<td>'+rateDisp+'</td>'+
+        '</tr>';
+    });
   }
   document.getElementById('daily-table').innerHTML='<table><thead>'+head+'</thead><tbody>'+rows+'</tbody></table>';
 }
 buildDailyTable('all');
 
 window.switchDailyTab = function(seg){
-  ['all','dom','ovs'].forEach(function(s){
+  ['all','dom','ovs','jpn'].forEach(function(s){
     var btn=document.getElementById('dtab-'+s);
-    btn.className='seg-tab'+(s===seg?(' '+(seg==='dom'?'dom-active':seg==='ovs'?'ovs-active':'active')):'');
+    var ac = s===seg ? (' '+(seg==='dom'?'dom-active':seg==='ovs'?'ovs-active':seg==='jpn'?'jpn-active':'active')) : '';
+    btn.className='seg-tab'+ac;
   });
   buildDailyTable(seg);
 };
