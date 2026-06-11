@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TU 상담회 모객 트렌드 분석 2025~2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #ffffff;
+    --bg-sub:    #f6f6f4;
+    --bg-card:   #ffffff;
+    --border:    rgba(0,0,0,0.09);
+    --border-md: rgba(0,0,0,0.16);
+    --text:      #1a1a18;
+    --text-sub:  #5f5e5a;
+    --text-hint: #999896;
+    --blue:      #378ADD;
+    --green:     #1D9E75;
+    --pink:      #D4537E;
+    --radius:    8px;
+    --radius-lg: 12px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    background: #ffffff;
+    color: #1a1a18;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 36px 28px 80px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 4px; color: #1a1a18; }
+  .subtitle { font-size: 13px; color: #5f5e5a; margin-bottom: 24px; }
+
+  /* tabs */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+  .tab-btn {
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.15);
+    background: #ffffff;
+    color: #5f5e5a;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { background: #f0f0ee; color: #1a1a18; }
+  .tab-btn.active { background: #f0f0ee; color: #1a1a18; font-weight: 600; border-color: rgba(0,0,0,0.22); }
+
+  /* summary metrics */
+  .metrics { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+  @media (max-width:620px){ .metrics { grid-template-columns: repeat(2,1fr); } }
+  .metric-card { background: #f6f6f4; border-radius: 8px; padding: 14px 16px; }
+  .metric-label { font-size: 12px; color: #5f5e5a; margin-bottom: 4px; }
+  .metric-value { font-size: 22px; font-weight: 600; line-height: 1.2; color: #1a1a18; }
+  .metric-sub   { font-size: 11px; color: #999896; margin-top: 4px; }
+
+  /* legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; font-size: 12px; color: #5f5e5a; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-line { width: 22px; height: 2.5px; border-radius: 2px; display: inline-block; }
+  .legend-line.dashed { background: none !important; border-top: 2.5px dashed; }
+
+  /* chart */
+  .chart-wrap { position: relative; width: 100%; }
+
+  /* section title */
+  .section-title { font-size: 13px; font-weight: 600; color: #5f5e5a; margin: 28px 0 12px; }
+
+  /* divider */
+  hr.divider { border: none; border-top: 1px solid rgba(0,0,0,0.07); margin: 28px 0; }
+
+  /* city cards */
+  .city-cards { display: grid; grid-template-columns: repeat(auto-fill,minmax(172px,1fr)); gap: 10px; margin-bottom: 8px; }
+  .city-card { background: #ffffff; border: 1px solid rgba(0,0,0,0.09); border-radius: 12px; padding: 14px; }
+  .city-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .city-name  { font-size: 14px; font-weight: 600; color: #1a1a18; }
+  .city-badge { font-size: 11px; color: #5f5e5a; background: #f0f0ee; padding: 2px 8px; border-radius: 4px; }
+  .city-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .city-stat-label { font-size: 11px; color: #5f5e5a; margin-bottom: 2px; }
+  .city-stat-value  { font-size: 16px; font-weight: 600; color: #1a1a18; }
+
+  /* session cards grid */
+  .session-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 10px; margin-top: 4px; }
+  .session-card {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.09);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .session-card-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  .session-num { font-size: 15px; font-weight: 700; color: #1a1a18; }
+  .session-city-badge {
+    font-size: 11px; font-weight: 500;
+    padding: 2px 8px; border-radius: 20px;
+    background: #eef5ff; color: #185FA5;
+  }
+  .session-date { font-size: 11px; color: #999896; margin-top: 1px; }
+  .session-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 2px; }
+  .session-stat-label { font-size: 11px; color: #5f5e5a; margin-bottom: 1px; }
+  .session-stat-value { font-size: 15px; font-weight: 600; color: #1a1a18; }
+  .session-rate-bar-wrap { margin-top: 10px; }
+  .session-rate-label { display: flex; justify-content: space-between; font-size: 11px; color: #5f5e5a; margin-bottom: 4px; }
+  .session-rate-bar { height: 4px; border-radius: 2px; background: #e8e8e6; overflow: hidden; }
+  .session-rate-fill { height: 100%; border-radius: 2px; background: #1D9E75; }
+</style>
+</head>
+<body>
+
+<h1>TU 상담회 모객 트렌드 분석</h1>
+<p class="subtitle">2025년 1월 ~ 2026년 6월 · 14차~36차 · 총 23회</p>
+
+<div class="tabs" id="tabs"></div>
+<div class="metrics" id="metrics"></div>
+<div class="legend" id="legend"></div>
+
+<!-- 트렌드 차트 + 상담회별 카드 -->
+<div id="trend-section">
+  <div class="chart-wrap" style="height:380px;">
+    <canvas id="cTrend" role="img" aria-label="회차별 문의수 예약수 추이">회차별 추이</canvas>
+  </div>
+  <div id="session-cards-wrap" style="display:none;">
+    <p class="section-title" style="margin-top:32px;" id="session-section-title">상담회별 수치</p>
+    <div class="session-grid" id="sessionGrid"></div>
+  </div>
+</div>
+
+<!-- 도시별 분석 -->
+<div id="city-section" style="display:none;">
+  <p class="section-title">도시별 누적 성과</p>
+  <div class="city-cards" id="cityCards"></div>
+
+  <hr class="divider">
+
+  <p class="section-title">도시별 총 문의수 / 예약수</p>
+  <div class="legend" id="legend2"></div>
+  <div class="chart-wrap" style="height:240px; margin-bottom:32px;">
+    <canvas id="cCity" role="img" aria-label="도시별 문의수 예약수">도시별 문의·예약</canvas>
+  </div>
+
+  <p class="section-title">도시별 평균 예약률</p>
+  <div class="chart-wrap" style="height:200px;">
+    <canvas id="cRate" role="img" aria-label="도시별 평균 예약률">도시별 예약률</canvas>
+  </div>
+</div>
+
+<script>
+const ALL = [
+  {n:14, city:'신주쿠',  date:'25.01', y:2025, inq:130, cons:37, res:32, rate:86},
+  {n:15, city:'시부야',  date:'25.02', y:2025, inq:134, cons:50, res:40, rate:89},
+  {n:16, city:'오사카',  date:'25.03', y:2025, inq:148, cons:57, res:40, rate:75},
+  {n:17, city:'시부야',  date:'25.04', y:2025, inq:179, cons:52, res:40, rate:77},
+  {n:18, city:'오사카',  date:'25.05', y:2025, inq:73,  cons:33, res:28, rate:85},
+  {n:19, city:'시부야',  date:'25.05', y:2025, inq:118, cons:39, res:31, rate:79},
+  {n:20, city:'시부야',  date:'25.06', y:2025, inq:55,  cons:17, res:15, rate:88},
+  {n:21, city:'후쿠오카',date:'25.06', y:2025, inq:44,  cons:17, res:16, rate:94},
+  {n:22, city:'시부야',  date:'25.07', y:2025, inq:66,  cons:26, res:23, rate:88},
+  {n:23, city:'오사카',  date:'25.07', y:2025, inq:75,  cons:32, res:24, rate:75},
+  {n:24, city:'후쿠오카',date:'25.08', y:2025, inq:39,  cons:20, res:15, rate:75},
+  {n:25, city:'시부야',  date:'25.09', y:2025, inq:113, cons:41, res:32, rate:78},
+  {n:26, city:'시부야',  date:'25.10', y:2025, inq:73,  cons:30, res:24, rate:80},
+  {n:27, city:'오사카',  date:'25.11', y:2025, inq:42,  cons:23, res:16, rate:70},
+  {n:28, city:'시부야',  date:'25.12', y:2025, inq:84,  cons:35, res:27, rate:77},
+  {n:29, city:'시부야',  date:'26.01', y:2026, inq:77,  cons:30, res:28, rate:93},
+  {n:30, city:'오사카',  date:'26.02', y:2026, inq:97,  cons:40, res:30, rate:83},
+  {n:31, city:'시부야',  date:'26.03', y:2026, inq:98,  cons:34, res:24, rate:71},
+  {n:32, city:'후쿠오카',date:'26.03', y:2026, inq:40,  cons:18, res:14, rate:82},
+  {n:33, city:'오사카',  date:'26.04', y:2026, inq:51,  cons:19, res:16, rate:84},
+  {n:34, city:'삿포로',  date:'26.04', y:2026, inq:12,  cons:6,  res:4,  rate:80},
+  {n:35, city:'시부야',  date:'26.05', y:2026, inq:104, cons:37, res:25, rate:74},
+  {n:36, city:'오사카',  date:'26.06', y:2026, inq:52,  cons:18, res:14, rate:78},
+];
+
+const CITIES = ['시부야','오사카','후쿠오카','신주쿠','삿포로'];
+const C = {
+  '시부야':   {solid:'#378ADD', faded:'rgba(55,138,221,0.55)',  badgeBg:'#eef5ff',  badgeText:'#185FA5'},
+  '오사카':   {solid:'#1D9E75', faded:'rgba(29,158,117,0.55)',  badgeBg:'#e6f5ef',  badgeText:'#0F6E56'},
+  '후쿠오카': {solid:'#D85A30', faded:'rgba(216,90,48,0.55)',   badgeBg:'#fdf0ea',  badgeText:'#993C1D'},
+  '신주쿠':   {solid:'#7F77DD', faded:'rgba(127,119,221,0.55)', badgeBg:'#f0effe',  badgeText:'#3C3489'},
+  '삿포로':   {solid:'#BA7517', faded:'rgba(186,117,23,0.55)',  badgeBg:'#faf3e0',  badgeText:'#633806'},
+};
+
+const GRID  = 'rgba(0,0,0,0.06)';
+const TICK  = '#999896';
+
+let view = 'all';
+const charts = {};
+
+function sum(a,k){ return a.reduce((s,d)=>s+d[k],0); }
+function avg(a,k){ return Math.round(a.reduce((s,d)=>s+d[k],0)/a.length); }
+function kill(id){ if(charts[id]){ charts[id].destroy(); delete charts[id]; } }
+
+/* ── Tabs ── */
+function renderTabs(){
+  const defs=[['all','전체 트렌드'],['2025','2025년'],['2026','2026년'],['rate','예약률 추이'],['city','도시별 분석']];
+  document.getElementById('tabs').innerHTML = defs.map(([v,l])=>
+    `<button class="tab-btn${v===view?' active':''}" onclick="setView('${v}')">${l}</button>`
+  ).join('');
+}
+
+/* ── Metrics ── */
+function renderMetrics(data){
+  const ti=sum(data,'inq'), tr=sum(data,'res');
+  const ar=avg(data,'rate'), cr=Math.round(tr/ti*100);
+  document.getElementById('metrics').innerHTML=[
+    ['총 문의수', ti.toLocaleString()+'건', data.length+'회 합산', '#378ADD'],
+    ['총 예약수', tr.toLocaleString()+'건', data.length+'회 합산', '#1D9E75'],
+    ['평균 예약률', ar+'%', '상담 대비', '#1a1a18'],
+    ['문의→예약 전환', cr+'%', '문의 대비', '#1a1a18'],
+  ].map(([l,v,s,c])=>`
+    <div class="metric-card">
+      <p class="metric-label">${l}</p>
+      <p class="metric-value" style="color:${c};">${v}</p>
+      <p class="metric-sub">${s}</p>
+    </div>`).join('');
+}
+
+/* ── Legend ── */
+function renderLegend(datasets){
+  document.getElementById('legend').innerHTML = datasets.map(d=>`
+    <span class="legend-item">
+      <span class="legend-line${d.borderDash&&d.borderDash.length?' dashed':''}"
+            style="background:${d.borderColor};border-color:${d.borderColor};"></span>
+      <span>${d.label}</span>
+    </span>`).join('');
+}
+
+/* ── Session cards ── */
+function renderSessionCards(data){
+  const wrap = document.getElementById('session-cards-wrap');
+  const title = document.getElementById('session-section-title');
+  title.textContent = `상담회별 수치 (${data.length}회)`;
+  wrap.style.display = 'block';
+
+  document.getElementById('sessionGrid').innerHTML = data.map(d=>{
+    const col = C[d.city] || {solid:'#888780', badgeBg:'#f0f0ee', badgeText:'#5f5e5a'};
+    const rateColor = d.rate >= 85 ? '#1D9E75' : d.rate >= 75 ? '#378ADD' : '#D85A30';
+    return `
+    <div class="session-card">
+      <div class="session-card-head">
+        <div>
+          <div class="session-num">${d.n}차</div>
+          <div class="session-date">${d.date.replace('.','. ')}</div>
+        </div>
+        <span class="session-city-badge" style="background:${col.badgeBg};color:${col.badgeText};">${d.city}</span>
+      </div>
+      <div class="session-stats">
+        <div>
+          <p class="session-stat-label">문의수</p>
+          <p class="session-stat-value" style="color:#378ADD;">${d.inq}건</p>
+        </div>
+        <div>
+          <p class="session-stat-label">예약수</p>
+          <p class="session-stat-value" style="color:#1D9E75;">${d.res}건</p>
+        </div>
+        <div>
+          <p class="session-stat-label">신환 상담</p>
+          <p class="session-stat-value">${d.cons}건</p>
+        </div>
+        <div>
+          <p class="session-stat-label">문의→예약</p>
+          <p class="session-stat-value">${Math.round(d.res/d.inq*100)}%</p>
+        </div>
+      </div>
+      <div class="session-rate-bar-wrap">
+        <div class="session-rate-label">
+          <span>예약률</span>
+          <span style="font-weight:600;color:${rateColor};">${d.rate}%</span>
+        </div>
+        <div class="session-rate-bar">
+          <div class="session-rate-fill" style="width:${d.rate}%;background:${rateColor};"></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Trend chart ── */
+function makeTrend(data, mode){
+  document.getElementById('trend-section').style.display = 'block';
+  document.getElementById('city-section').style.display  = 'none';
+  document.getElementById('legend').style.display = 'flex';
+
+  kill('trend');
+
+  const labels = data.map(d=>[`${d.n}차`, d.city, d.date]);
+
+  let datasets;
+  if(mode==='rate'){
+    datasets=[{
+      label:'예약률(%)',
+      data: data.map(d=>d.rate),
+      borderColor:'#D4537E', backgroundColor:'rgba(212,83,126,0.07)',
+      fill:true, tension:0.35, pointRadius:4, pointHoverRadius:6, borderWidth:2,
+    }];
+  } else {
+    datasets=[
+      { label:'문의수', data:data.map(d=>d.inq), borderColor:'#378ADD', backgroundColor:'transparent', fill:false, tension:0.35, pointRadius:4, pointHoverRadius:6, borderWidth:2 },
+      { label:'예약수', data:data.map(d=>d.res), borderColor:'#1D9E75', backgroundColor:'transparent', fill:false, tension:0.35, pointRadius:4, pointHoverRadius:6, borderWidth:2, borderDash:[6,3] },
+    ];
+  }
+  renderLegend(datasets);
+
+  charts.trend = new Chart(document.getElementById('cTrend'),{
+    type:'line',
+    data:{ labels, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{ callbacks:{
+          title: items=>{ const d=data[items[0].dataIndex]; return `${d.n}차 · ${d.city} (${d.date})`; },
+          label: item=>` ${item.dataset.label}: ${item.parsed.y}${mode==='rate'?'%':'건'}`,
+        }}
+      },
+      scales:{
+        x:{ ticks:{ font:{size:11}, color:TICK, maxRotation:0, minRotation:0, autoSkip:false }, grid:{ color:GRID } },
+        y:{ ticks:{ font:{size:11}, color:TICK, callback:v=>v+(mode==='rate'?'%':'건') }, grid:{ color:GRID }, min:mode==='rate'?55:0 }
+      },
+      layout:{ padding:{ top:8, right:16, bottom:0, left:0 } }
+    }
+  });
+
+  /* 세션 카드: 전체/2025/2026만 표시, 예약률 탭은 숨김 */
+  if(mode === 'rate'){
+    document.getElementById('session-cards-wrap').style.display = 'none';
+  } else {
+    renderSessionCards(data);
+  }
+}
+
+/* ── City section ── */
+function makeCity(){
+  document.getElementById('trend-section').style.display = 'none';
+  document.getElementById('city-section').style.display  = 'block';
+  document.getElementById('legend').style.display = 'none';
+
+  kill('city'); kill('crate');
+
+  const cityData = CITIES.map(city=>{
+    const rows=ALL.filter(d=>d.city===city);
+    if(!rows.length) return null;
+    const ti=sum(rows,'inq'), tr=sum(rows,'res');
+    return { city, count:rows.length, totalInq:ti, totalRes:tr, avgRate:avg(rows,'rate'), convRate:Math.round(tr/ti*100) };
+  }).filter(Boolean);
+
+  document.getElementById('cityCards').innerHTML = cityData.map(c=>{
+    const col=C[c.city]||{badgeBg:'#f0f0ee',badgeText:'#5f5e5a'};
+    return `
+    <div class="city-card">
+      <div class="city-card-header">
+        <span class="city-name">${c.city}</span>
+        <span class="city-badge" style="background:${col.badgeBg};color:${col.badgeText};">${c.count}회 개최</span>
+      </div>
+      <div class="city-stats">
+        <div><p class="city-stat-label">총 문의</p><p class="city-stat-value" style="color:#378ADD;">${c.totalInq}</p></div>
+        <div><p class="city-stat-label">총 예약</p><p class="city-stat-value" style="color:#1D9E75;">${c.totalRes}</p></div>
+        <div><p class="city-stat-label">평균 예약률</p><p class="city-stat-value">${c.avgRate}%</p></div>
+        <div><p class="city-stat-label">문의→예약</p><p class="city-stat-value">${c.convRate}%</p></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('legend2').innerHTML=`
+    <span class="legend-item"><span class="legend-line" style="background:#378ADD;height:10px;border-radius:2px;opacity:0.75;"></span>총 문의수</span>
+    <span class="legend-item"><span class="legend-line" style="background:#1D9E75;height:10px;border-radius:2px;opacity:0.4;"></span>총 예약수</span>`;
+
+  const cLabels=cityData.map(d=>d.city);
+
+  charts.city = new Chart(document.getElementById('cCity'),{
+    type:'bar',
+    data:{ labels:cLabels, datasets:[
+      { label:'총 문의수', data:cityData.map(d=>d.totalInq), backgroundColor:cityData.map(d=>(C[d.city]||{faded:'rgba(136,135,128,0.55)'}).faded), borderColor:cityData.map(d=>(C[d.city]||{solid:'#888'}).solid), borderWidth:1 },
+      { label:'총 예약수', data:cityData.map(d=>d.totalRes), backgroundColor:cityData.map(d=>(C[d.city]||{faded:'rgba(136,135,128,0.2)'}).faded.replace(/[\d.]+\)$/,'0.2)')), borderColor:cityData.map(d=>(C[d.city]||{solid:'#888'}).solid), borderWidth:1 },
+    ]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:i=>` ${i.dataset.label}: ${i.parsed.y}건`}} },
+      scales:{ x:{ticks:{font:{size:13},color:TICK},grid:{display:false}}, y:{ticks:{font:{size:11},color:TICK,callback:v=>v+'건'},grid:{color:GRID}} },
+      layout:{padding:{right:8}}
+    }
+  });
+
+  charts.crate = new Chart(document.getElementById('cRate'),{
+    type:'bar',
+    data:{ labels:cLabels, datasets:[{
+      label:'평균 예약률', data:cityData.map(d=>d.avgRate),
+      backgroundColor:cityData.map(d=>(C[d.city]||{faded:'rgba(136,135,128,0.55)'}).faded),
+      borderColor:cityData.map(d=>(C[d.city]||{solid:'#888'}).solid), borderWidth:1, barPercentage:0.45,
+    }]},
+    options:{ responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:i=>` 평균 예약률: ${i.parsed.y}%`}} },
+      scales:{ x:{ticks:{font:{size:13},color:TICK},grid:{display:false}}, y:{min:60,max:100,ticks:{font:{size:11},color:TICK,callback:v=>v+'%'},grid:{color:GRID}} },
+      layout:{padding:{right:8}}
+    }
+  });
+}
+
+/* ── setView ── */
+function setView(v){
+  view=v; renderTabs();
+  const data = v==='2025'?ALL.filter(d=>d.y===2025): v==='2026'?ALL.filter(d=>d.y===2026): ALL;
+  renderMetrics(data);
+  if(v==='city') makeCity();
+  else makeTrend(data, v==='rate'?'rate':'default');
+}
+
+renderTabs();
+renderMetrics(ALL);
+makeTrend(ALL,'default');
+</script>
+</body>
+</html>
