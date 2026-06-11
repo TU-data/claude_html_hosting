@@ -1,12 +1,6 @@
 [
   {
     "date": "2026-06-11",
-    "title": "예약금 납부 환자 현황 보고서 · 2026년 3~6월",
-    "description": "2026년 3~6월 주차별·일자별 예약금 납부 환자 건수, 치료비용계획, 주차내 회수액 현황 분석 보고서 (제로네이트/마스필름 2개 이상, 6/8 주차 제외)",
-    "path": "reports/2026-06-11/deposit_report.html"
-  },
-  {
-    "date": "2026-06-11",
     "title": "TU 상담회 모객 트렌드 분석 2025~2026",
     "description": "",
     "path": "reports/2026-06-11/tu_consult_analysis_1.html"
