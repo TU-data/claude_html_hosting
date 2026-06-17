@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DB 현황 주간보고 — 2026년 6월 2주차 (6/8~6/14)</title>
+  <meta name="description" content="2026년 6월 8일~14일 기준 DB 유입·유효·예약·내원 현황 주간보고. 전주 및 직전 3주 평균 대비 증감 분석 포함.">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Pretendard', sans-serif; background: #F4F4F4; color: #1A1612; font-size: 14px; line-height: 1.6; }
+
+    .gnav { background: #000; height: 44px; display: flex; align-items: center; padding: 0 32px; position: sticky; top: 0; z-index: 200; gap: 16px; }
+    .gnav-logo { font-size: 15px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+    .gnav-logo span { color: #FF4500; }
+    .gnav-sep { width: 1px; height: 14px; background: rgba(255,255,255,.18); flex-shrink: 0; }
+    .gnav-label { font-size: 12px; color: rgba(255,255,255,.5); }
+    .gnav-right { margin-left: auto; font-size: 11px; color: rgba(255,255,255,.3); }
+
+    .hero { background: #1A1612; padding: 44px 40px 36px; }
+    .hero-eye { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #FF4500; margin-bottom: 12px; }
+    .hero-h1 { font-size: 34px; font-weight: 700; color: #fff; letter-spacing: -.374px; line-height: 1.2; margin-bottom: 8px; }
+    .hero-sub { font-size: 13px; color: rgba(255,255,255,.4); margin-bottom: 24px; }
+    .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip { font-size: 11px; font-weight: 600; background: rgba(255,255,255,.07); color: rgba(255,255,255,.5); border-radius: 9999px; padding: 4px 14px; letter-spacing: .3px; }
+    .chip em { color: #FF9466; font-style: normal; }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    .sec { font-size: 10px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: #808080; padding-bottom: 8px; border-bottom: 1px solid #E9E9E9; margin-top: 40px; margin-bottom: 16px; }
+    .sec:first-child { margin-top: 0; }
+
+    .sc-row { display: grid; grid-template-columns: repeat(6,1fr); gap: 10px; margin-bottom: 10px; }
+    .sc { background: #fff; border: 1px solid #E9E9E9; border-radius: 14px; padding: 18px 16px 16px; }
+    .sc-n { border-top: 3px solid #E9E9E9; }
+    .sc-o { border-top: 3px solid #FF4500; }
+    .sc-r { border-top: 3px solid #D7263D; }
+    .sc-b { border-top: 3px solid #1D6FCC; }
+    .sc-g { border-top: 3px solid #2A9D3F; }
+    .sc-a { border-top: 3px solid #D4860B; }
+    .sc-lbl { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #808080; margin-bottom: 8px; }
+    .sc-val { font-size: 28px; font-weight: 700; color: #1A1612; letter-spacing: -.5px; line-height: 1; }
+    .sc-unit { font-size: 13px; font-weight: 400; color: #B4B4B4; margin-left: 2px; }
+    .sc-d3 { margin-top: 6px; font-size: 11px; font-weight: 700; }
+    .sc-d1 { margin-top: 3px; font-size: 10px; color: #B4B4B4; }
+    .up { color: #D7263D; }
+    .dn { color: #1D6FCC; }
+    .flat { color: #D4860B; }
+
+    .card { background: #fff; border: 1px solid #E9E9E9; border-radius: 16px; padding: 22px; }
+    .card-ttl { font-size: 13px; font-weight: 700; color: #1A1612; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .mt16 { margin-top: 16px; }
+
+    .bdg { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; }
+    .bdg-o { background: rgba(255,69,0,.1); color: #FF4500; }
+    .bdg-b { background: rgba(29,111,204,.1); color: #1D6FCC; }
+    .bdg-g { background: #F4F4F4; color: #808080; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+    th { font-size: 10px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: #808080; padding: 7px 10px; border-bottom: 1px solid #E9E9E9; white-space: nowrap; }
+    td { padding: 8px 10px; border-bottom: 1px solid #F4F4F4; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .zero { color: #D2D2D2; }
+    .bold { font-weight: 700; }
+    .tfoot-row td { font-weight: 700; background: #FAFAFA; border-top: 1px solid #E9E9E9; padding: 9px 10px; }
+    .d-up { color: #D7263D; font-weight: 700; font-size: 11px; }
+    .d-dn { color: #1D6FCC; font-weight: 700; font-size: 11px; }
+    .d-fl { color: #D4860B; font-weight: 700; font-size: 11px; }
+
+    /* 퍼널 */
+    .funnel { display: flex; gap: 2px; }
+    .fn-step { flex: 1; padding: 14px 10px; text-align: center; background: #F4F4F4; }
+    .fn-step:first-child { border-radius: 10px 0 0 10px; }
+    .fn-step:last-child  { border-radius: 0 10px 10px 0; }
+    .fn-step.act { background: #1A1612; }
+    .fn-lbl { font-size: 9px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: #808080; margin-bottom: 4px; }
+    .fn-val { font-size: 20px; font-weight: 700; color: #1A1612; line-height: 1; }
+    .fn-rate { font-size: 9px; color: #B4B4B4; margin-top: 3px; }
+    .fn-step.act .fn-lbl { color: rgba(255,255,255,.45); }
+    .fn-step.act .fn-val  { color: #fff; }
+    .fn-step.act .fn-rate { color: rgba(255,255,255,.3); }
+
+    /* 가로바 차트 */
+    .hbar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .hbar-lbl { width: 110px; font-size: 11px; color: #4F4F4F; text-align: right; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .hbar-track { flex: 1; height: 20px; background: #F4F4F4; border-radius: 4px; overflow: hidden; }
+    .hbar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 7px; font-size: 10px; font-weight: 600; color: #fff; }
+    .hbar-num { width: 34px; font-size: 11px; font-weight: 700; text-align: right; flex-shrink: 0; }
+
+    /* 범례 */
+    .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 14px; }
+    .leg-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #4F4F4F; }
+    .leg-dot { width: 9px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+
+    /* 일별 바 차트 */
+    .d-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .d-lbl { width: 62px; font-size: 11px; color: #808080; text-align: right; flex-shrink: 0; }
+    .d-lbl.cur { color: #FF4500; font-weight: 700; }
+    .d-track { flex: 1; height: 22px; background: #F4F4F4; border-radius: 5px; overflow: hidden; display: flex; }
+    .d-seg { height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: rgba(255,255,255,.9); }
+    .d-num { width: 28px; font-size: 11px; font-weight: 700; color: #1A1612; text-align: right; }
+
+    /* 인사이트 */
+    .insight { background: #1A1612; border-radius: 16px; padding: 26px 26px 22px; margin-top: 24px; }
+    .ins-ttl { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #FF4500; margin-bottom: 14px; }
+    .insight ul { list-style: none; }
+    .insight li { font-size: 13px; color: rgba(255,255,255,.8); padding: 7px 0 7px 16px; position: relative; border-bottom: 1px solid rgba(255,255,255,.06); line-height: 1.65; }
+    .insight li:last-child { border-bottom: none; }
+    .insight li::before { content: '·'; position: absolute; left: 0; color: #FF4500; font-weight: 700; }
+    .hl  { color: #FF9466; font-weight: 700; font-style: normal; }
+    .hlb { color: #74AADC; font-weight: 700; font-style: normal; }
+
+    .footer { border-top: 1px solid #E9E9E9; padding: 20px 24px; font-size: 11px; color: #B4B4B4; text-align: center; }
+  </style>
+</head>
+<body>
+
+<nav class="gnav">
+  <div class="gnav-logo">TÜ<span>·</span>gether</div>
+  <div class="gnav-sep"></div>
+  <div class="gnav-label">DB 현황 주간보고</div>
+  <div class="gnav-right">전략기획팀 · 2026. 06. 08 – 06. 14</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eye">Weekly DB Report · 2026 W24</div>
+  <div class="hero-h1">DB 현황 주간보고<br>6월 2주차</div>
+  <div class="hero-sub">2026년 6월 8일(월) ~ 6월 14일(일) · v_daily_db_status 기준 · 예약·내원은 실시간 상태 반영</div>
+  <div class="hero-chips">
+    <div class="chip">전체 DB <em>301건</em></div>
+    <div class="chip">유효 DB <em>236건</em> · 유효율 <em>78.4%</em></div>
+    <div class="chip">예약 <em>104건</em> · 내원 <em>53건</em></div>
+    <div class="chip">직전 3주 평균 대비 전체 DB <em>▲0.2%</em></div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- 01. 핵심 지표 -->
+  <div class="sec">01 · 주간 핵심 지표</div>
+  <div style="font-size:11px;color:#808080;margin-bottom:10px;">스코어카드 기본 비교값: <strong>직전 3주 평균 대비</strong> | 직전 3주: 2026-05-18(월) ~ 2026-06-07(일)</div>
+
+  <div class="sc-row">
+    <div class="sc sc-n">
+      <div class="sc-lbl">전체 DB</div>
+      <div class="sc-val">301<span class="sc-unit">건</span></div>
+      <div class="sc-d3 up">▲0.2%_▲1건 <span style="font-size:10px;font-weight:400;color:#B4B4B4;">(3주평균 300건)</span></div>
+      <div class="sc-d1">전주 대비 <span class="dn">▼4.7%_▼15건</span></div>
+    </div>
+    <div class="sc sc-o">
+      <div class="sc-lbl">유효 DB</div>
+      <div class="sc-val">236<span class="sc-unit">건</span></div>
+      <div class="sc-d3 dn">▼2.0%_▼5건 <span style="font-size:10px;font-weight:400;color:#B4B4B4;">(3주평균 241건)</span></div>
+      <div class="sc-d1">전주 대비 <span class="dn">▼10.6%_▼28건</span></div>
+    </div>
+    <div class="sc sc-r">
+      <div class="sc-lbl">제외 DB</div>
+      <div class="sc-val">65<span class="sc-unit">건</span></div>
+      <div class="sc-d3 up">▲8.9%_▲5건 <span style="font-size:10px;font-weight:400;color:#B4B4B4;">(3주평균 60건)</span></div>
+      <div class="sc-d1">전주 대비 <span class="up">▲25.0%_▲13건</span></div>
+    </div>
+    <div class="sc sc-a">
+      <div class="sc-lbl">부재 DB</div>
+      <div class="sc-val">36<span class="sc-unit">건</span></div>
+      <div class="sc-d3 up">▲9.1%_▲3건 <span style="font-size:10px;font-weight:400;color:#B4B4B4;">(3주평균 33건)</span></div>
+      <div class="sc-d1">전주 대비 <span class="dn">▼23.4%_▼11건</span></div>
+    </div>
+    <div class="sc sc-b">
+      <div class="sc-lbl">예약 수</div>
+      <div class="sc-val">104<span class="sc-unit">건</span></div>
+      <div class="sc-d3 up">▲8.7%_▲8건 <span style="font-size:10px;font-weight:400;color:#B4B4B4;">(3주평균 96건)</span></div>
+      <div class="sc-d1">전주 대비 <span class="dn">▼4.6%_▼5건</span></div>
+    </div>
+    <div class="sc sc-g">
+      <div class="sc-lbl">내원 수</div>
+      <div class="sc-val">53<span class="sc-unit">건</span></div>
+      <div class="sc-d3 up">▲3.3%_▲2건 <span style="font-size:10px;font-weight:400;color:#B4B4B4;">(3주평균 51건)</span></div>
+      <div class="sc-d1">전주 대비 <span class="dn">▼13.1%_▼8건</span></div>
+    </div>
+  </div>
+
+  <div class="card mt16">
+    <div class="card-ttl">주차별 비교 요약</div>
+    <table>
+      <thead>
+        <tr>
+          <th>지표</th>
+          <th class="num">당주 (6/8~14)</th>
+          <th class="num">전주 (6/1~7)</th>
+          <th class="num">전주 대비</th>
+          <th class="num">직전 3주 평균 (5/18~6/7)</th>
+          <th class="num">직전 3주 대비</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="bold">전체 DB</td><td class="num bold">301건</td><td class="num">316건</td><td class="num"><span class="d-dn">▼4.7%_▼15건</span></td><td class="num">300건</td><td class="num"><span class="d-up">▲0.2%_▲1건</span></td></tr>
+        <tr><td class="bold">유효 DB</td><td class="num bold">236건</td><td class="num">264건</td><td class="num"><span class="d-dn">▼10.6%_▼28건</span></td><td class="num">241건</td><td class="num"><span class="d-dn">▼2.0%_▼5건</span></td></tr>
+        <tr><td>유효율</td><td class="num bold">78.4%</td><td class="num">83.5%</td><td class="num"><span class="d-dn">▼5.1%p</span></td><td class="num">80.1%</td><td class="num"><span class="d-dn">▼1.7%p</span></td></tr>
+        <tr><td>제외 DB</td><td class="num bold">65건</td><td class="num">52건</td><td class="num"><span class="d-up">▲25.0%_▲13건</span></td><td class="num">60건</td><td class="num"><span class="d-up">▲8.9%_▲5건</span></td></tr>
+        <tr><td>부재 DB</td><td class="num bold">36건</td><td class="num">47건</td><td class="num"><span class="d-dn">▼23.4%_▼11건</span></td><td class="num">33건</td><td class="num"><span class="d-up">▲9.1%_▲3건</span></td></tr>
+        <tr><td class="bold">예약 수</td><td class="num bold">104건</td><td class="num">109건</td><td class="num"><span class="d-dn">▼4.6%_▼5건</span></td><td class="num">96건</td><td class="num"><span class="d-up">▲8.7%_▲8건</span></td></tr>
+        <tr><td class="bold">내원 수</td><td class="num bold">53건</td><td class="num">61건</td><td class="num"><span class="d-dn">▼13.1%_▼8건</span></td><td class="num">51건</td><td class="num"><span class="d-up">▲3.3%_▲2건</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:11px;color:#B4B4B4;">* 직전 3주 평균 = 3주 풀링 합계 ÷ 3 | 유효율 증감은 %p 기준 | 예약·내원은 전체 배분 DB 기준 실시간 상태 반영</div>
+  </div>
+
+
+  <!-- 02. 퍼널 -->
+  <div class="sec">02 · 당주 유입 퍼널</div>
+  <div class="card">
+    <div class="card-ttl">전체 DB → 유효 → 예약 → 내원 전환 흐름</div>
+    <div class="funnel" id="funnel-wrap"></div>
+    <div style="margin-top:12px;font-size:11px;color:#B4B4B4;">* 전체 DB = 유효 DB + 제외 DB | 예약·내원은 전체 배분 DB 기준 (당주 유입 한정 아님) | 실시간 소급 변경 가능</div>
+  </div>
+
+
+  <!-- 03. 콜유형 / DB타입 -->
+  <div class="sec">03 · 콜유형 · DB타입별 현황</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-ttl">콜유형별 <span class="bdg bdg-g">인콜 vs 아웃콜</span></div>
+      <table>
+        <thead><tr><th>구분</th><th class="num">전체</th><th class="num">유효</th><th class="num">유효율</th><th class="num">제외</th><th class="num">부재</th><th class="num">예약</th><th class="num">내원</th></tr></thead>
+        <tbody>
+          <tr><td><span class="bdg bdg-b">인콜</span></td><td class="num bold">155</td><td class="num" style="color:#FF4500;font-weight:700;">137</td><td class="num">88.4%</td><td class="num">18</td><td class="num">15</td><td class="num" style="color:#1D6FCC;font-weight:700;">79</td><td class="num" style="color:#2A9D3F;font-weight:700;">44</td></tr>
+          <tr><td><span class="bdg bdg-o">아웃콜</span></td><td class="num bold">142</td><td class="num" style="color:#FF4500;font-weight:700;">99</td><td class="num">69.7%</td><td class="num" style="color:#D7263D;font-weight:700;">43</td><td class="num">21</td><td class="num" style="color:#1D6FCC;font-weight:700;">25</td><td class="num" style="color:#2A9D3F;font-weight:700;">9</td></tr>
+          <tr><td><span class="bdg bdg-g">미분류</span></td><td class="num">4</td><td class="num zero">0</td><td class="num zero">0%</td><td class="num">4</td><td class="num zero">0</td><td class="num zero">0</td><td class="num zero">0</td></tr>
+        </tbody>
+        <tfoot><tr class="tfoot-row"><td>합계</td><td class="num">301</td><td class="num">236</td><td class="num">78.4%</td><td class="num">65</td><td class="num">36</td><td class="num">104</td><td class="num">53</td></tr></tfoot>
+      </table>
+      <div style="margin-top:12px;background:#F4F4F4;border-radius:10px;padding:10px 12px;">
+        <div style="font-size:10px;font-weight:700;color:#808080;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;">직전 3주 평균 대비</div>
+        <div style="font-size:12px;display:flex;gap:16px;flex-wrap:wrap;">
+          <span>인콜 <span class="bdg bdg-b">138건</span> → <strong>155건</strong> <span class="d-up">▲12.3%_▲17건</span></span>
+          <span>아웃콜 <span class="bdg bdg-o">162건</span> → <strong>142건</strong> <span class="d-dn">▼12.3%_▼20건</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">DB타입별 <span class="bdg bdg-g">국내 vs 일본</span></div>
+      <table>
+        <thead><tr><th>구분</th><th class="num">전체</th><th class="num">유효</th><th class="num">유효율</th><th class="num">제외</th><th class="num">부재</th><th class="num">예약</th><th class="num">내원</th></tr></thead>
+        <tbody>
+          <tr><td><span class="bdg bdg-g">국내</span></td><td class="num bold">256</td><td class="num" style="color:#FF4500;font-weight:700;">191</td><td class="num">74.6%</td><td class="num" style="color:#D7263D;font-weight:700;">65</td><td class="num">36</td><td class="num" style="color:#1D6FCC;font-weight:700;">102</td><td class="num" style="color:#2A9D3F;font-weight:700;">52</td></tr>
+          <tr><td><span class="bdg bdg-b">일본</span></td><td class="num bold">45</td><td class="num" style="color:#FF4500;font-weight:700;">45</td><td class="num">100.0%</td><td class="num zero">0</td><td class="num zero">0</td><td class="num" style="color:#1D6FCC;font-weight:700;">2</td><td class="num" style="color:#2A9D3F;font-weight:700;">1</td></tr>
+        </tbody>
+        <tfoot><tr class="tfoot-row"><td>합계</td><td class="num">301</td><td class="num">236</td><td class="num">78.4%</td><td class="num">65</td><td class="num">36</td><td class="num">104</td><td class="num">53</td></tr></tfoot>
+      </table>
+      <div style="margin-top:12px;background:#F4F4F4;border-radius:10px;padding:10px 12px;">
+        <div style="font-size:10px;font-weight:700;color:#808080;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px;">직전 3주 평균 대비</div>
+        <div style="font-size:12px;display:flex;gap:16px;flex-wrap:wrap;">
+          <span>국내 <span class="bdg bdg-g">266건</span> → <strong>256건</strong> <span class="d-dn">▼3.8%_▼10건</span></span>
+          <span>일본 <span class="bdg bdg-b">34건</span> → <strong>45건</strong> <span class="d-up">▲32.4%_▲11건</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 04. 채널별 상세 -->
+  <div class="sec">04 · 채널별 상세 현황</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-ttl">국내 인콜 채널 <span class="bdg bdg-b">국내 121건 + 일본LINE 34건</span></div>
+      <table>
+        <thead><tr><th>채널</th><th class="num">전체</th><th class="num">유효</th><th class="num">제외</th><th class="num">부재</th><th class="num">예약</th><th class="num">내원</th></tr></thead>
+        <tbody>
+          <tr><td class="bold">네이버예약</td><td class="num bold">23</td><td class="num" style="color:#FF4500;">23</td><td class="num zero">0</td><td class="num zero">0</td><td class="num" style="color:#1D6FCC;font-weight:700;">24</td><td class="num" style="color:#2A9D3F;">14</td></tr>
+          <tr><td class="bold">인콜(대표번호)</td><td class="num bold">22</td><td class="num" style="color:#FF4500;">22</td><td class="num zero">0</td><td class="num zero">0</td><td class="num" style="color:#1D6FCC;font-weight:700;">23</td><td class="num" style="color:#2A9D3F;">12</td></tr>
+          <tr><td>homepage</td><td class="num bold">25</td><td class="num" style="color:#FF4500;">21</td><td class="num">4</td><td class="num">3</td><td class="num" style="color:#1D6FCC;">14</td><td class="num" style="color:#2A9D3F;">9</td></tr>
+          <tr><td>zd-instagram_dm</td><td class="num bold">20</td><td class="num">10</td><td class="num" style="color:#D7263D;font-weight:700;">10</td><td class="num">5</td><td class="num" style="color:#1D6FCC;">2</td><td class="num zero">0</td></tr>
+          <tr><td>zd-kakaotalk</td><td class="num bold">13</td><td class="num" style="color:#FF4500;">13</td><td class="num zero">0</td><td class="num zero">0</td><td class="num" style="color:#1D6FCC;">11</td><td class="num" style="color:#2A9D3F;">7</td></tr>
+          <tr><td>zd-whatsapp</td><td class="num bold">12</td><td class="num">11</td><td class="num">1</td><td class="num" style="color:#D4860B;">7</td><td class="num">3</td><td class="num">1</td></tr>
+          <tr><td>zd-line</td><td class="num bold">4</td><td class="num">1</td><td class="num">3</td><td class="num zero">0</td><td class="num zero">0</td><td class="num zero">0</td></tr>
+          <tr style="border-top:1px dashed #E9E9E9;"><td><span class="bdg bdg-b" style="font-size:9px;">일본</span> LINE-일본DB</td><td class="num bold">34</td><td class="num" style="color:#FF4500;">34</td><td class="num zero">0</td><td class="num zero">0</td><td class="num" style="color:#1D6FCC;">2</td><td class="num" style="color:#2A9D3F;">1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-ttl">아웃콜 채널 <span class="bdg bdg-o">국내 131건 + 일본 11건</span></div>
+      <table>
+        <thead><tr><th>채널</th><th>구분</th><th class="num">전체</th><th class="num">유효</th><th class="num">유효율</th><th class="num">제외</th><th class="num">부재</th><th class="num">예약</th><th class="num">내원</th></tr></thead>
+        <tbody>
+          <tr><td class="bold">meta-TU</td><td><span class="bdg bdg-o" style="font-size:9px;">국내</span></td><td class="num bold">86</td><td class="num">46</td><td class="num" style="font-size:11px;">53.5%</td><td class="num" style="color:#D7263D;font-weight:700;">40</td><td class="num">12</td><td class="num">4</td><td class="num">1</td></tr>
+          <tr><td>gangnamsister</td><td><span class="bdg bdg-o" style="font-size:9px;">국내</span></td><td class="num bold">24</td><td class="num" style="color:#FF4500;">23</td><td class="num" style="font-size:11px;">95.8%</td><td class="num">1</td><td class="num">4</td><td class="num" style="color:#1D6FCC;">14</td><td class="num" style="color:#2A9D3F;">7</td></tr>
+          <tr><td>babitalk</td><td><span class="bdg bdg-o" style="font-size:9px;">국내</span></td><td class="num bold">18</td><td class="num" style="color:#FF4500;">16</td><td class="num" style="font-size:11px;">88.9%</td><td class="num">2</td><td class="num">3</td><td class="num">7</td><td class="num">1</td></tr>
+          <tr><td>zd-line(아웃콜)</td><td><span class="bdg bdg-o" style="font-size:9px;">국내</span></td><td class="num bold">3</td><td class="num">3</td><td class="num" style="font-size:11px;">100%</td><td class="num zero">0</td><td class="num">2</td><td class="num zero">0</td><td class="num zero">0</td></tr>
+          <tr style="border-top:1px dashed #E9E9E9;"><td>일본상담회-일본DB</td><td><span class="bdg bdg-b" style="font-size:9px;">일본</span></td><td class="num bold">10</td><td class="num" style="color:#FF4500;">10</td><td class="num" style="font-size:11px;">100%</td><td class="num zero">0</td><td class="num zero">0</td><td class="num zero">0</td><td class="num zero">0</td></tr>
+          <tr><td>강남언니-일본DB</td><td><span class="bdg bdg-b" style="font-size:9px;">일본</span></td><td class="num bold">1</td><td class="num">1</td><td class="num" style="font-size:11px;">100%</td><td class="num zero">0</td><td class="num zero">0</td><td class="num zero">0</td><td class="num zero">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- 05. 채널별 전환 지표 -->
+  <div class="sec">05 · 채널별 전환 지표</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-ttl">채널별 유효율 <span class="bdg bdg-o">유효 ÷ 전체</span></div>
+      <div id="valid-chart"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">채널별 예약 전환율 <span class="bdg bdg-b">예약 ÷ 유효</span></div>
+      <div id="reserve-chart"></div>
+    </div>
+  </div>
+
+
+  <!-- 06. 일별 DB 추이 -->
+  <div class="sec">06 · 일별 DB 유입 추이 (전주 vs 당주)</div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-ttl">일별 전체 DB 추이</div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#D2D2D2;"></div>전주</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#1A1612;"></div>당주</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#FF4500;"></div>유효 (당주)</div>
+      </div>
+      <div id="daily-total"></div>
+    </div>
+    <div class="card">
+      <div class="card-ttl">일별 예약 · 내원 추이 (당주)</div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#1D6FCC;"></div>예약</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#2A9D3F;"></div>내원</div>
+      </div>
+      <div id="daily-res"></div>
+    </div>
+  </div>
+
+  <div class="card mt16">
+    <div class="card-ttl">일별 지표 상세 <span class="bdg bdg-g">6/1~6/14</span></div>
+    <table>
+      <thead>
+        <tr><th>날짜</th><th>요일</th><th class="num">전체 DB</th><th class="num">유효 DB</th><th class="num">제외 DB</th><th class="num">유효율</th><th class="num">부재 DB</th><th class="num">예약</th><th class="num">내원</th><th class="num">인콜</th><th class="num">아웃콜</th></tr>
+      </thead>
+      <tbody id="daily-tbl"></tbody>
+    </table>
+  </div>
+
+
+  <!-- 07. 인사이트 -->
+  <div class="sec">07 · 주간 인사이트</div>
+  <div class="insight">
+    <div class="ins-ttl">Key Insights — 2026 W24 DB 현황</div>
+    <ul>
+      <li><em class="hl">전체 DB 301건</em>은 직전 3주 평균(300건) 대비 <em class="hl">▲0.2%</em>로 보합. 전주(316건) 대비 ▼4.7% 감소하나 중기 추세 이탈 수준은 아님. 유효 DB는 직전 3주 평균(241건) 대비 <em class="hl">▼2.0%</em>로 소폭 하락.</li>
+      <li><em class="hl">제외 DB 65건</em>은 직전 3주 평균(60건) 대비 <em class="hl">▲8.9%</em> 증가. 원인의 61.5%가 <em class="hl">meta-TU 단일 채널</em>(86건 중 40건, 제외율 46.5%). 직전 3주 meta-TU 제외율 38.8% 대비 이번 주 급등 → 광고 모수·타겟팅 점검 필요.</li>
+      <li><em class="hlb">인콜 구조적 강세 확인</em>: 인콜 예약 전환율 57.7%(79/137) vs 아웃콜 25.3%(25/99). 직전 3주 인콜 전환율 58.4%(226/387)와 동일 수준 유지. 대표번호·네이버예약이 예약 각각 23·24건으로 안정적 기여.</li>
+      <li><em class="hl">zd-instagram_dm 제외 급등</em>: 20건 중 10건 제외(50%). 직전 3주 제외율 16.3% 대비 3배 악화. 인스타그램 DM 유입 품질 집중 점검 필요.</li>
+      <li><em class="hl">일본 DB 45건</em>: 직전 3주 평균(34건) 대비 <em class="hl">▲32.4%</em> 증가. 유효율 100% 유지. 다만 예약 전환 2건(4.4%)에 그침. 일본상담회 10건·강남언니 1건 전환율 0%로 팔로업 강화 필요.</li>
+      <li>부재 DB 36건은 직전 3주 평균(33건) 대비 소폭 증가(▲9.1%)이나, 전주(47건) 대비 <em class="hlb">▼23.4% 개선</em>. zd-whatsapp 부재가 직전 3주 22건/주 → 7건으로 크게 감소.</li>
+      <li>예약(104건)·내원(53건)은 직전 3주 평균 대비 각각 <em class="hl">▲8.7%, ▲3.3%</em>로 중기 기준 상향. 일별로는 <em class="hl">6/8(월)·6/9(화)</em>에 예약·내원 집중(예약 45건, 내원 28건), 주후반으로 갈수록 감소하는 패턴.</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="footer">
+  TUgether 전략기획팀 · 기준: 2026-06-08 ~ 2026-06-14 · 소스: v_daily_db_status · 예약·내원 실시간 상태 반영 (소급 변경 가능)
+</div>
+
+<script>
+(function(){
+
+  /* ── 퍼널 ── */
+  var funnelData = [
+    { lbl:'전체 DB', val:301, rate:'100%',       act:true  },
+    { lbl:'유효 DB', val:236, rate:'78.4%',       act:false },
+    { lbl:'제외 DB', val:65,  rate:'전체 21.6%',  act:false },
+    { lbl:'부재 DB', val:36,  rate:'유효 15.3%',  act:false },
+    { lbl:'예약 수', val:104, rate:'유효 44.1%',  act:false },
+    { lbl:'내원 수', val:53,  rate:'예약 51.0%',  act:false }
+  ];
+  var fHtml = '';
+  funnelData.forEach(function(d){
+    var cls = 'fn-step' + (d.act ? ' act' : '');
+    fHtml += '<div class="'+cls+'">';
+    fHtml += '<div class="fn-lbl">'+d.lbl+'</div>';
+    fHtml += '<div class="fn-val">'+d.val+'</div>';
+    fHtml += '<div class="fn-rate">'+d.rate+'</div>';
+    fHtml += '</div>';
+  });
+  document.getElementById('funnel-wrap').innerHTML = fHtml;
+
+  /* ── 유효율 바 차트 ── */
+  var vData = [
+    { lbl:'네이버예약',      total:23, valid:23 },
+    { lbl:'인콜(대표번호)',   total:22, valid:22 },
+    { lbl:'zd-kakaotalk',   total:13, valid:13 },
+    { lbl:'LINE-일본DB',    total:34, valid:34 },
+    { lbl:'일본상담회',      total:10, valid:10 },
+    { lbl:'babitalk',       total:18, valid:16 },
+    { lbl:'gangnamsister',  total:24, valid:23 },
+    { lbl:'homepage(인콜)',  total:25, valid:21 },
+    { lbl:'zd-whatsapp',    total:12, valid:11 },
+    { lbl:'zd-instagram',   total:20, valid:10 },
+    { lbl:'meta-TU',        total:86, valid:46 }
+  ].sort(function(a,b){ return (b.valid/b.total)-(a.valid/a.total); });
+
+  var vHtml = '';
+  vData.forEach(function(d){
+    var r = Math.round(d.valid/d.total*100);
+    var col = r>=90?'#2A9D3F': r>=70?'#FF4500': r>=50?'#D4860B':'#D7263D';
+    vHtml += '<div class="hbar-row">';
+    vHtml += '<div class="hbar-lbl">'+d.lbl+'</div>';
+    vHtml += '<div class="hbar-track"><div class="hbar-fill" style="width:'+r+'%;background:'+col+';">'+(r>22?r+'%':'')+'</div></div>';
+    vHtml += '<div class="hbar-num" style="color:'+col+';">'+r+'%</div>';
+    vHtml += '</div>';
+  });
+  document.getElementById('valid-chart').innerHTML = vHtml;
+
+  /* ── 예약 전환율 바 차트 ── */
+  var rData = [
+    { lbl:'네이버예약',      valid:23, res:24 },
+    { lbl:'인콜(대표번호)',   valid:22, res:23 },
+    { lbl:'homepage(인콜)',  valid:21, res:14 },
+    { lbl:'zd-kakaotalk',   valid:13, res:11 },
+    { lbl:'gangnamsister',  valid:23, res:14 },
+    { lbl:'babitalk',       valid:16, res:7  },
+    { lbl:'zd-whatsapp',    valid:11, res:3  },
+    { lbl:'meta-TU',        valid:46, res:4  },
+    { lbl:'LINE-일본DB',    valid:34, res:2  },
+    { lbl:'zd-instagram',   valid:10, res:2  },
+    { lbl:'일본상담회',      valid:10, res:0  }
+  ].sort(function(a,b){ return (b.res/b.valid)-(a.res/a.valid); });
+
+  var rrHtml = '';
+  rData.forEach(function(d){
+    var r = d.valid>0 ? Math.round(d.res/d.valid*100) : 0;
+    var col = r>=80?'#2A9D3F': r>=50?'#1D6FCC': r>=20?'#D4860B':'#D7263D';
+    rrHtml += '<div class="hbar-row">';
+    rrHtml += '<div class="hbar-lbl">'+d.lbl+'</div>';
+    rrHtml += '<div class="hbar-track"><div class="hbar-fill" style="width:'+Math.min(r,100)+'%;background:'+col+';">'+(r>22?r+'%':'')+'</div></div>';
+    rrHtml += '<div class="hbar-num" style="color:'+col+';">'+r+'%</div>';
+    rrHtml += '</div>';
+  });
+  document.getElementById('reserve-chart').innerHTML = rrHtml;
+
+  /* ── 일별 데이터 ── */
+  var daily = [
+    { date:'6/1',  dow:'월', w:1, total:55, valid:51, excl:4,  absent:11, res:21, vis:10, incall:34, outcall:21 },
+    { date:'6/2',  dow:'화', w:1, total:46, valid:39, excl:7,  absent:11, res:16, vis:10, incall:22, outcall:24 },
+    { date:'6/3',  dow:'수', w:1, total:43, valid:38, excl:5,  absent:3,  res:18, vis:11, incall:20, outcall:23 },
+    { date:'6/4',  dow:'목', w:1, total:47, valid:39, excl:8,  absent:3,  res:12, vis:7,  incall:29, outcall:18 },
+    { date:'6/5',  dow:'금', w:1, total:43, valid:35, excl:8,  absent:6,  res:17, vis:8,  incall:27, outcall:16 },
+    { date:'6/6',  dow:'토', w:1, total:40, valid:30, excl:10, absent:4,  res:25, vis:15, incall:21, outcall:19 },
+    { date:'6/7',  dow:'일', w:1, total:42, valid:32, excl:10, absent:9,  res:0,  vis:0,  incall:15, outcall:27 },
+    { date:'6/8',  dow:'월', w:2, total:39, valid:33, excl:6,  absent:4,  res:23, vis:11, incall:27, outcall:12 },
+    { date:'6/9',  dow:'화', w:2, total:43, valid:36, excl:7,  absent:5,  res:22, vis:17, incall:25, outcall:18 },
+    { date:'6/10', dow:'수', w:2, total:50, valid:35, excl:15, absent:5,  res:11, vis:4,  incall:22, outcall:26 },
+    { date:'6/11', dow:'목', w:2, total:50, valid:40, excl:10, absent:7,  res:15, vis:9,  incall:23, outcall:25 },
+    { date:'6/12', dow:'금', w:2, total:43, valid:33, excl:10, absent:10, res:8,  vis:4,  incall:22, outcall:21 },
+    { date:'6/13', dow:'토', w:2, total:38, valid:29, excl:9,  absent:2,  res:20, vis:5,  incall:19, outcall:19 },
+    { date:'6/14', dow:'일', w:2, total:38, valid:30, excl:8,  absent:3,  res:5,  vis:3,  incall:17, outcall:21 }
+  ];
+
+  var maxTotal = Math.max.apply(null, daily.map(function(d){ return d.total; }));
+  var maxRes   = Math.max.apply(null, daily.map(function(d){ return d.res; }));
+
+  /* ── 일별 전체 DB 차트 ── */
+  var tHtml = '';
+  daily.forEach(function(d){
+    var wT = Math.round(d.total/maxTotal*100);
+    var wV = Math.round(d.valid/maxTotal*100);
+    var lblCls = 'd-lbl' + (d.w===2 ? ' cur' : '');
+    var fillCol = d.w===2 ? '#1A1612' : '#D2D2D2';
+    tHtml += '<div class="d-row">';
+    tHtml += '<div class="'+lblCls+'">'+d.date+'('+d.dow+')</div>';
+    tHtml += '<div style="flex:1;display:flex;flex-direction:column;gap:2px;">';
+    tHtml += '<div class="d-track"><div class="d-seg" style="width:'+wT+'%;background:'+fillCol+';">'+(wT>14?d.total:'')+'</div></div>';
+    if(d.w===2){
+      tHtml += '<div class="d-track" style="height:10px;"><div class="d-seg" style="width:'+wV+'%;background:#FF4500;font-size:9px;">'+(wV>20?d.valid:'')+'</div></div>';
+    }
+    tHtml += '</div>';
+    tHtml += '<div class="d-num">'+(d.w===2?'<b>'+d.total+'</b>':d.total)+'</div>';
+    tHtml += '</div>';
+  });
+  document.getElementById('daily-total').innerHTML = tHtml;
+
+  /* ── 일별 예약·내원 차트 ── */
+  var rHtml = '';
+  daily.filter(function(d){ return d.w===2; }).forEach(function(d){
+    var wR = maxRes>0 ? Math.round(d.res/maxRes*100) : 0;
+    var wV = maxRes>0 ? Math.round(d.vis/maxRes*100) : 0;
+    rHtml += '<div class="d-row">';
+    rHtml += '<div class="d-lbl cur">'+d.date+'('+d.dow+')</div>';
+    rHtml += '<div style="flex:1;display:flex;flex-direction:column;gap:2px;">';
+    rHtml += '<div class="d-track"><div class="d-seg" style="width:'+wR+'%;background:#1D6FCC;">'+(wR>14?d.res:'')+'</div></div>';
+    rHtml += '<div class="d-track" style="height:14px;"><div class="d-seg" style="width:'+wV+'%;background:#2A9D3F;font-size:9px;">'+(wV>14?d.vis:'')+'</div></div>';
+    rHtml += '</div>';
+    rHtml += '<div style="display:flex;flex-direction:column;align-items:flex-end;width:28px;">';
+    rHtml += '<span style="font-size:11px;font-weight:700;color:#1D6FCC;">'+d.res+'</span>';
+    rHtml += '<span style="font-size:10px;font-weight:700;color:#2A9D3F;">'+d.vis+'</span>';
+    rHtml += '</div>';
+    rHtml += '</div>';
+  });
+  document.getElementById('daily-res').innerHTML = rHtml;
+
+  /* ── 일별 상세 표 ── */
+  var tbHtml = '';
+  daily.forEach(function(d){
+    var rate = (d.valid/d.total*100).toFixed(1);
+    var bg  = d.w===2 ? 'background:rgba(255,69,0,0.025);' : '';
+    var bld = d.w===2 ? 'font-weight:700;' : '';
+    var dc  = d.w===2 ? 'color:#FF4500;' : '';
+    tbHtml += '<tr style="'+bg+'">';
+    tbHtml += '<td style="'+dc+bld+'">'+d.date+'</td>';
+    tbHtml += '<td>'+d.dow+(d.w===2?' <span style="font-size:9px;background:#FF4500;color:#fff;border-radius:3px;padding:1px 5px;">당주</span>':'')+'</td>';
+    tbHtml += '<td class="num" style="'+bld+'">'+d.total+'</td>';
+    tbHtml += '<td class="num" style="color:#FF4500;'+bld+'">'+d.valid+'</td>';
+    tbHtml += '<td class="num">'+d.excl+'</td>';
+    tbHtml += '<td class="num">'+rate+'%</td>';
+    tbHtml += '<td class="num'+(d.absent>=10?' bold" style="color:#D7263D;':'"')+'>'+d.absent+'</td>';
+    tbHtml += '<td class="num" style="color:#1D6FCC;'+bld+'">'+d.res+'</td>';
+    tbHtml += '<td class="num" style="color:#2A9D3F;'+bld+'">'+d.vis+'</td>';
+    tbHtml += '<td class="num">'+d.incall+'</td>';
+    tbHtml += '<td class="num">'+d.outcall+'</td>';
+    tbHtml += '</tr>';
+    if(d.date==='6/7'){
+      tbHtml += '<tr style="background:#F4F4F4;">';
+      tbHtml += '<td colspan="2" style="font-size:11px;font-weight:700;color:#808080;">전주 소계</td>';
+      tbHtml += '<td class="num bold">316</td><td class="num bold">264</td>';
+      tbHtml += '<td class="num">52</td><td class="num">83.5%</td><td class="num">47</td>';
+      tbHtml += '<td class="num bold" style="color:#1D6FCC;">109</td>';
+      tbHtml += '<td class="num bold" style="color:#2A9D3F;">61</td>';
+      tbHtml += '<td class="num">155</td><td class="num">148</td>';
+      tbHtml += '</tr>';
+    }
+  });
+  tbHtml += '<tr style="background:#FFF5F2;font-weight:700;">';
+  tbHtml += '<td colspan="2" style="color:#FF4500;">당주 소계</td>';
+  tbHtml += '<td class="num">301</td><td class="num" style="color:#FF4500;">236</td>';
+  tbHtml += '<td class="num">65</td><td class="num">78.4%</td><td class="num">36</td>';
+  tbHtml += '<td class="num" style="color:#1D6FCC;">104</td>';
+  tbHtml += '<td class="num" style="color:#2A9D3F;">53</td>';
+  tbHtml += '<td class="num">155</td><td class="num">142</td>';
+  tbHtml += '</tr>';
+  document.getElementById('daily-tbl').innerHTML = tbHtml;
+
+})();
+</script>
+
+</body>
+</html>
