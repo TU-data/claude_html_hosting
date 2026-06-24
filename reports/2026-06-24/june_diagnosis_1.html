@@ -1,1 +1,723 @@
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026년 6월 국내/해외 매출 진단</title>
+  <meta name="description" content="2026년 6월 국내/해외 매출·상담·동의율·객단가 이슈 진단 — 직전 3개월 및 전월 동기 비교 (누적 영업일 21일 기준)">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background: #F4F4F4;
+      color: #1A1612;
+      min-height: 100vh;
+      padding: 32px 24px 64px;
+    }
+    .page-header {
+      max-width: 1100px;
+      margin: 0 auto 32px;
+    }
+    .page-header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1A1612;
+      letter-spacing: -0.3px;
+    }
+    .page-header .sub {
+      font-size: 13px;
+      color: #808080;
+      margin-top: 6px;
+      font-weight: 400;
+    }
+    .page-header .badge {
+      display: inline-block;
+      background: #1A1612;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      margin-right: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      max-width: 1100px;
+      margin: 36px auto 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #808080;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+
+    /* ── SEGMENT TABS ── */
+    .seg-tabs {
+      max-width: 1100px;
+      margin: 0 auto 16px;
+      display: flex;
+      gap: 8px;
+    }
+    .seg-tab {
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1.5px solid #E9E9E9;
+      background: #fff;
+      color: #808080;
+      cursor: default;
+    }
+    .seg-tab.active-dom { background: #1A1612; color: #fff; border-color: #1A1612; }
+    .seg-tab.active-glb { background: #FF4500; color: #fff; border-color: #FF4500; }
+
+    /* ── SCORE CARDS ── */
+    .cards-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px 18px 18px;
+      border: 1.5px solid #E9E9E9;
+    }
+    .card .kpi-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #808080;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 10px;
+    }
+    .card .kpi-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1A1612;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .card .kpi-value span {
+      font-size: 13px;
+      font-weight: 500;
+      color: #808080;
+      margin-left: 2px;
+    }
+    .card .compare-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .card .compare-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+    }
+    .card .compare-item .clabel {
+      color: #B4B4B4;
+      font-weight: 500;
+    }
+    .card .compare-item .cdelta {
+      font-weight: 700;
+      font-size: 11px;
+    }
+    .up { color: #D7263D; }
+    .down { color: #1D6FCC; }
+    .flat { color: #D4860B; }
+
+    /* ── DIVIDER ── */
+    .seg-divider {
+      max-width: 1100px;
+      margin: 28px auto 0;
+      border: none;
+      border-top: 1.5px solid #E9E9E9;
+    }
+
+    /* ── SUMMARY TABLE ── */
+    .table-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+    thead tr {
+      background: #1A1612;
+      color: #fff;
+    }
+    thead th {
+      padding: 12px 16px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+    thead th:first-child { text-align: left; }
+    tbody tr { border-bottom: 1px solid #F4F4F4; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody td {
+      padding: 12px 16px;
+      text-align: center;
+      vertical-align: middle;
+      color: #1A1612;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    tbody td:first-child { text-align: left; font-weight: 600; color: #4F4F4F; }
+    .td-main { font-weight: 700 !important; color: #1A1612 !important; }
+    .td-up { color: #D7263D; font-weight: 700; }
+    .td-down { color: #1D6FCC; font-weight: 700; }
+    .td-flat { color: #D4860B; font-weight: 700; }
+
+    /* ── INSIGHT BOX ── */
+    .insight-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .insight-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 24px 22px;
+      border-left: 4px solid #E9E9E9;
+    }
+    .insight-card.warn { border-left-color: #1D6FCC; }
+    .insight-card.alert { border-left-color: #D7263D; }
+    .insight-card.ok { border-left-color: #16A34A; }
+    .insight-card.neutral { border-left-color: #D4860B; }
+    .insight-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1A1612;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .insight-card .tag {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .tag-blue { background: #EBF2FF; color: #1D6FCC; }
+    .tag-red { background: #FFF0F1; color: #D7263D; }
+    .tag-green { background: #F0FFF4; color: #16A34A; }
+    .tag-amber { background: #FFF8E7; color: #D4860B; }
+    .insight-card p {
+      font-size: 13px;
+      color: #4F4F4F;
+      line-height: 1.7;
+    }
+    .insight-card strong { color: #1A1612; font-weight: 700; }
+
+    /* ── BAR CHART ── */
+    .bar-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+    .bar-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px 20px;
+    }
+    .bar-card h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1A1612;
+      margin-bottom: 16px;
+    }
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .bar-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #808080;
+      width: 64px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .bar-track {
+      flex: 1;
+      height: 22px;
+      background: #F4F4F4;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+    }
+    .bar-fill span {
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .bar-val {
+      font-size: 11px;
+      font-weight: 700;
+      color: #1A1612;
+      width: 52px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>2026년 6월 국내 / 해외 매출 진단</h1>
+  <p class="sub">
+    <span class="badge">누적 영업일 21일 기준</span>
+    전월(5월) 동기 및 직전 3개월(2·3·4월) 동기 평균과 비교
+  </p>
+</div>
+
+<!-- ─── 전체 ─── -->
+<div class="section-label">전체 (Total)</div>
+<div class="cards-grid" id="cards-total"></div>
+
+<hr class="seg-divider" style="margin-top:28px; margin-bottom:28px;">
+
+<!-- ─── 국내 ─── -->
+<div class="section-label" style="margin-top:0;">국내 (Domestic)</div>
+<div class="seg-tabs">
+  <span class="seg-tab active-dom">국내</span>
+  <span class="seg-tab" style="color:#D7263D; border-color:#E9E9E9;">▼ 전월 대비 이슈</span>
+  <span class="seg-tab" style="color:#1D6FCC; border-color:#E9E9E9;">▼ 3개월 평균 대비 이슈</span>
+</div>
+
+<div class="cards-grid" id="cards-dom"></div>
+
+<hr class="seg-divider" style="margin-top:24px; margin-bottom:24px;">
+
+<!-- ─── 해외 ─── -->
+<div class="section-label" style="margin-top:0;">해외 (Overseas)</div>
+<div class="seg-tabs">
+  <span class="seg-tab active-glb">해외</span>
+  <span class="seg-tab" style="color:#16A34A; border-color:#E9E9E9;">▲ 전월 대비 양호</span>
+  <span class="seg-tab" style="color:#D7263D; border-color:#E9E9E9;">▼ 3개월 평균 대비 이슈</span>
+</div>
+
+<div class="cards-grid" id="cards-glb"></div>
+
+<hr class="seg-divider" style="margin-top:28px; margin-bottom:28px;">
+
+<!-- ─── 비교 테이블 ─── -->
+<div class="section-label" style="margin-top:0;">종합 비교표</div>
+<div class="table-wrap">
+  <table id="summary-table"></table>
+</div>
+
+<hr class="seg-divider" style="margin-top:28px; margin-bottom:28px;">
+
+<!-- ─── 신환/구환 매출 바 차트 ─── -->
+<div class="section-label" style="margin-top:0;">신환 · 구환 매출 분리 (신환=상담완료 / 구환=coordinator_name IS NULL)</div>
+<div class="bar-section" id="bar-section"></div>
+
+<hr class="seg-divider" style="margin-top:28px; margin-bottom:28px;">
+
+<!-- ─── 인사이트 ─── -->
+<div class="section-label" style="margin-top:0;">진단 요약</div>
+<div class="insight-grid" id="insight-grid"></div>
+
+<!-- ─────────────────── SCRIPT (DOM 아래) ─────────────────── -->
+<script>
+(function(){
+
+/* ── 원본 데이터 ── */
+var D = {
+  total: {
+    cur:  { rev: 13.1153, consult: 275, consent: 195, denom: 264, arp: 714.01 },
+    prev: { rev: 13.5391, consult: 230, consent: 163, denom: 210, arp: 730.75 },
+    m3:   { rev: 15.6746, consult: 299.67, consent: 209.67, rate: 0.7506, arp: 722.79 },
+    new6: 10.6293, ret6: 2.4859,
+    new5:  9.7969, ret5: 3.7422,
+    new3m_avg: 13.0280, ret3m_avg: 2.6466
+  },
+  dom: {
+    cur:  { rev: 8.0807, consult: 211, consent: 143, denom: 201, arp: 580.21 },
+    prev: { rev: 9.7655, consult: 193, consent: 133, denom: 173, arp: 625.26 },
+    m3:   { rev: 10.1408, consult: 246.67, consent: 167.67, rate: 0.7332, arp: 561.04 },
+    new6:  6.0322, ret6: 2.0485,
+    new5:  6.5983, ret5: 3.1672,
+    new3m_avg: (8.6509 + 8.2298 + 7.6191) / 3, ret3m_avg: (2.1803 + 1.8331 + 1.9094) / 3
+  },
+  glb: {
+    cur:  { rev: 5.0345, consult: 64, consent: 52, denom: 63, arp: 1081.96 },
+    prev: { rev: 3.7736, consult: 37, consent: 30, denom: 37, arp: 1198.43 },
+    m3:   { rev: 5.5338, consult: 53.0, consent: 42.0, rate: 0.8289, arp: 1368.50 },
+    new6:  4.5971, ret6: 0.4374,
+    new5:  3.1986, ret5: 0.5750,
+    new3m_avg: (3.5146 + 4.8254 + 6.2442) / 3, ret3m_avg: (0.6618 + 0.3499 + 1.0055) / 3
+  }
+};
+
+function rate(a, b){ return SAFE_DIVIDE(a - b, b) * 100; }
+function SAFE_DIVIDE(a, b){ return b === 0 ? 0 : a / b; }
+function pct(v){ return v >= 0 ? '▲' + v.toFixed(1) + '%' : '▼' + Math.abs(v).toFixed(1) + '%'; }
+function pctTag(v){ return v >= 0 ? 'up' : 'down'; }
+
+function consentRate(c, d){ return SAFE_DIVIDE(c, d) * 100; }
+
+/* ── 스코어카드 ── */
+function renderCards(segKey, containerId){
+  var S = D[segKey];
+  var curRate = consentRate(S.cur.consent, S.cur.denom);
+  var prevRate = consentRate(S.prev.consent, S.prev.denom);
+  var m3Rate = S.m3.rate * 100;
+
+  var cards = [
+    {
+      label: '매출',
+      value: S.cur.rev.toFixed(2) + '<span>억</span>',
+      rows: [
+        { l: '전월 동기', d: delta_rev(S.cur.rev, S.prev.rev) },
+        { l: '3개월 평균', d: delta_rev(S.cur.rev, S.m3.rev) }
+      ]
+    },
+    {
+      label: '상담수',
+      value: S.cur.consult + '<span>건</span>',
+      rows: [
+        { l: '전월 동기', d: delta_cnt(S.cur.consult, S.prev.consult) },
+        { l: '3개월 평균', d: delta_cnt(S.cur.consult, S.m3.consult) }
+      ]
+    },
+    {
+      label: '동의수',
+      value: S.cur.consent + '<span>건</span>',
+      rows: [
+        { l: '전월 동기', d: delta_cnt(S.cur.consent, S.prev.consent) },
+        { l: '3개월 평균', d: delta_cnt(S.cur.consent, S.m3.consent) }
+      ]
+    },
+    {
+      label: '동의율',
+      value: curRate.toFixed(1) + '<span>%</span>',
+      rows: [
+        { l: '전월 동기', d: delta_rate(curRate, prevRate) },
+        { l: '3개월 평균', d: delta_rate(curRate, m3Rate) }
+      ]
+    },
+    {
+      label: '객단가',
+      value: S.cur.arp.toFixed(0) + '<span>만</span>',
+      rows: [
+        { l: '전월 동기', d: delta_arp(S.cur.arp, S.prev.arp) },
+        { l: '3개월 평균', d: delta_arp(S.cur.arp, S.m3.arp) }
+      ]
+    }
+  ];
+
+  var html = '';
+  cards.forEach(function(c){
+    html += '<div class="card">';
+    html += '<div class="kpi-label">' + c.label + '</div>';
+    html += '<div class="kpi-value">' + c.value + '</div>';
+    html += '<div class="compare-row">';
+    c.rows.forEach(function(r){
+      html += '<div class="compare-item">';
+      html += '<span class="clabel">' + r.l + '</span>';
+      html += '<span class="cdelta ' + r.d.cls + '">' + r.d.txt + '</span>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+  document.getElementById(containerId).innerHTML = html;
+}
+
+function delta_rev(cur, base){
+  var r = rate(cur, base);
+  var v = cur - base;
+  var cls = r > 0 ? 'up' : r < 0 ? 'down' : 'flat';
+  var sym = r > 0 ? '▲' : r < 0 ? '▼' : '-';
+  return { cls: cls, txt: sym + Math.abs(r).toFixed(1) + '%_' + sym + Math.abs(v).toFixed(2) + '억' };
+}
+function delta_cnt(cur, base){
+  var r = rate(cur, base);
+  var v = cur - base;
+  var cls = r > 0 ? 'up' : r < 0 ? 'down' : 'flat';
+  var sym = r > 0 ? '▲' : r < 0 ? '▼' : '-';
+  return { cls: cls, txt: sym + Math.abs(r).toFixed(1) + '%_' + sym + Math.round(Math.abs(v)) + '건' };
+}
+function delta_rate(cur, base){
+  var v = cur - base;
+  var cls = v > 0 ? 'up' : v < 0 ? 'down' : 'flat';
+  var sym = v > 0 ? '▲' : v < 0 ? '▼' : '-';
+  return { cls: cls, txt: sym + Math.abs(v).toFixed(1) + '%p' };
+}
+function delta_arp(cur, base){
+  var r = rate(cur, base);
+  var v = cur - base;
+  var cls = r > 0 ? 'up' : r < 0 ? 'down' : 'flat';
+  var sym = r > 0 ? '▲' : r < 0 ? '▼' : '-';
+  return { cls: cls, txt: sym + Math.abs(r).toFixed(1) + '%_' + sym + Math.round(Math.abs(v)) + '만' };
+}
+
+renderCards('total', 'cards-total');
+renderCards('dom', 'cards-dom');
+renderCards('glb', 'cards-glb');
+
+/* ── 종합 테이블 ── */
+(function(){
+  var T = D.total;
+  var totRate = consentRate(T.cur.consent, T.cur.denom);
+  var totPrevRate = consentRate(T.prev.consent, T.prev.denom);
+  var totM3Rate = T.m3.rate * 100;
+
+  var domRate = consentRate(D.dom.cur.consent, D.dom.cur.denom);
+  var domPrevRate = consentRate(D.dom.prev.consent, D.dom.prev.denom);
+  var domM3Rate = D.dom.m3.rate * 100;
+  var glbRate = consentRate(D.glb.cur.consent, D.glb.cur.denom);
+  var glbPrevRate = consentRate(D.glb.prev.consent, D.glb.prev.denom);
+  var glbM3Rate = D.glb.m3.rate * 100;
+
+  var rows = [
+    {
+      seg: '전체 매출', unit: '억',
+      cur: T.cur.rev.toFixed(2), prev: T.prev.rev.toFixed(2), m3: T.m3.rev.toFixed(2),
+      d1: delta_rev(T.cur.rev, T.prev.rev), d2: delta_rev(T.cur.rev, T.m3.rev)
+    },
+    {
+      seg: '전체 상담수', unit: '건',
+      cur: T.cur.consult, prev: T.prev.consult, m3: T.m3.consult.toFixed(1),
+      d1: delta_cnt(T.cur.consult, T.prev.consult), d2: delta_cnt(T.cur.consult, T.m3.consult)
+    },
+    {
+      seg: '전체 동의수', unit: '건',
+      cur: T.cur.consent, prev: T.prev.consent, m3: T.m3.consent.toFixed(1),
+      d1: delta_cnt(T.cur.consent, T.prev.consent), d2: delta_cnt(T.cur.consent, T.m3.consent)
+    },
+    {
+      seg: '전체 동의율', unit: '%',
+      cur: totRate.toFixed(1)+'%', prev: totPrevRate.toFixed(1)+'%', m3: totM3Rate.toFixed(1)+'%',
+      d1: delta_rate(totRate, totPrevRate), d2: delta_rate(totRate, totM3Rate)
+    },
+    {
+      seg: '전체 객단가', unit: '만',
+      cur: T.cur.arp.toFixed(0), prev: T.prev.arp.toFixed(0), m3: T.m3.arp.toFixed(0),
+      d1: delta_arp(T.cur.arp, T.prev.arp), d2: delta_arp(T.cur.arp, T.m3.arp)
+    },
+    { seg: '─', cur: '', prev: '', m3: '', d1: { cls:'flat',txt:''}, d2:{cls:'flat',txt:''} },
+    {
+      seg: '국내 매출', unit: '억',
+      cur: D.dom.cur.rev.toFixed(2), prev: D.dom.prev.rev.toFixed(2), m3: D.dom.m3.rev.toFixed(2),
+      d1: delta_rev(D.dom.cur.rev, D.dom.prev.rev), d2: delta_rev(D.dom.cur.rev, D.dom.m3.rev)
+    },
+    {
+      seg: '국내 상담수', unit: '건',
+      cur: D.dom.cur.consult, prev: D.dom.prev.consult, m3: D.dom.m3.consult.toFixed(1),
+      d1: delta_cnt(D.dom.cur.consult, D.dom.prev.consult), d2: delta_cnt(D.dom.cur.consult, D.dom.m3.consult)
+    },
+    {
+      seg: '국내 동의수', unit: '건',
+      cur: D.dom.cur.consent, prev: D.dom.prev.consent, m3: D.dom.m3.consent.toFixed(1),
+      d1: delta_cnt(D.dom.cur.consent, D.dom.prev.consent), d2: delta_cnt(D.dom.cur.consent, D.dom.m3.consent)
+    },
+    {
+      seg: '국내 동의율', unit: '%',
+      cur: domRate.toFixed(1)+'%', prev: domPrevRate.toFixed(1)+'%', m3: domM3Rate.toFixed(1)+'%',
+      d1: delta_rate(domRate, domPrevRate), d2: delta_rate(domRate, domM3Rate)
+    },
+    {
+      seg: '국내 객단가', unit: '만',
+      cur: D.dom.cur.arp.toFixed(0), prev: D.dom.prev.arp.toFixed(0), m3: D.dom.m3.arp.toFixed(0),
+      d1: delta_arp(D.dom.cur.arp, D.dom.prev.arp), d2: delta_arp(D.dom.cur.arp, D.dom.m3.arp)
+    },
+    { seg: '─', cur: '', prev: '', m3: '', d1: { cls:'flat',txt:''}, d2:{cls:'flat',txt:''} },
+    {
+      seg: '해외 매출', unit: '억',
+      cur: D.glb.cur.rev.toFixed(2), prev: D.glb.prev.rev.toFixed(2), m3: D.glb.m3.rev.toFixed(2),
+      d1: delta_rev(D.glb.cur.rev, D.glb.prev.rev), d2: delta_rev(D.glb.cur.rev, D.glb.m3.rev)
+    },
+    {
+      seg: '해외 상담수', unit: '건',
+      cur: D.glb.cur.consult, prev: D.glb.prev.consult, m3: D.glb.m3.consult.toFixed(1),
+      d1: delta_cnt(D.glb.cur.consult, D.glb.prev.consult), d2: delta_cnt(D.glb.cur.consult, D.glb.m3.consult)
+    },
+    {
+      seg: '해외 동의수', unit: '건',
+      cur: D.glb.cur.consent, prev: D.glb.prev.consent, m3: D.glb.m3.consent.toFixed(1),
+      d1: delta_cnt(D.glb.cur.consent, D.glb.prev.consent), d2: delta_cnt(D.glb.cur.consent, D.glb.m3.consent)
+    },
+    {
+      seg: '해외 동의율', unit: '%',
+      cur: glbRate.toFixed(1)+'%', prev: glbPrevRate.toFixed(1)+'%', m3: glbM3Rate.toFixed(1)+'%',
+      d1: delta_rate(glbRate, glbPrevRate), d2: delta_rate(glbRate, glbM3Rate)
+    },
+    {
+      seg: '해외 객단가', unit: '만',
+      cur: D.glb.cur.arp.toFixed(0), prev: D.glb.prev.arp.toFixed(0), m3: D.glb.m3.arp.toFixed(0),
+      d1: delta_arp(D.glb.cur.arp, D.glb.prev.arp), d2: delta_arp(D.glb.cur.arp, D.glb.m3.arp)
+    }
+  ];
+
+  var h = '<thead><tr>';
+  h += '<th>구분</th><th>6월 (21일)</th><th>5월 동기</th><th>전월 대비</th><th>직전 3개월 평균</th><th>3개월 대비</th>';
+  h += '</tr></thead><tbody>';
+  rows.forEach(function(r){
+    if(r.seg === '─'){
+      h += '<tr style="background:#F4F4F4;"><td colspan="6" style="height:8px;padding:0;"></td></tr>';
+      return;
+    }
+    h += '<tr>';
+    h += '<td>' + r.seg + '</td>';
+    h += '<td class="td-main">' + r.cur + '</td>';
+    h += '<td>' + r.prev + '</td>';
+    h += '<td class="td-' + r.d1.cls + '">' + r.d1.txt + '</td>';
+    h += '<td>' + r.m3 + '</td>';
+    h += '<td class="td-' + r.d2.cls + '">' + r.d2.txt + '</td>';
+    h += '</tr>';
+  });
+  h += '</tbody>';
+  document.getElementById('summary-table').innerHTML = h;
+})();
+
+/* ── 신환/구환 바 차트 ── */
+(function(){
+  var months = ['2월', '3월', '4월', '5월', '6월'];
+  var totNew  = [12.1655, 13.0551, 13.8633,  9.7969, 10.6293];
+  var totRet  = [ 2.8420,  2.1830,  2.9149,  3.7422,  2.4859];
+  var domNew  = [8.6509, 8.2298, 7.6191, 6.5983, 6.0322];
+  var domRet  = [2.1803, 1.8331, 1.9094, 3.1672, 2.0485];
+  var glbNew  = [3.5146, 4.8254, 6.2442, 3.1986, 4.5971];
+  var glbRet  = [0.6618, 0.3499, 1.0055, 0.5750, 0.4374];
+
+  var totMax = Math.max.apply(null, totNew.map(function(v,i){ return v + totRet[i]; }));
+  var domMax = Math.max.apply(null, domNew.map(function(v,i){ return v + domRet[i]; }));
+  var glbMax = Math.max.apply(null, glbNew.map(function(v,i){ return v + glbRet[i]; }));
+
+  function buildBar(label, newV, retV, maxV, isGlb, newColor){
+    var total = newV + retV;
+    var newPct = (newV / maxV * 100).toFixed(1);
+    var retPct = (retV / maxV * 100).toFixed(1);
+    var newColor = newColor || (isGlb ? '#FF4500' : '#1A1612');
+    var retColor = '#B4B4B4';
+    var isCur = label === '6월';
+    var bold = isCur ? 'font-weight:700; color:#1A1612;' : '';
+    return '<div class="bar-row">' +
+      '<div class="bar-name" style="' + bold + '">' + label + '</div>' +
+      '<div class="bar-track">' +
+        '<div style="display:flex;height:100%;gap:2px;">' +
+          '<div class="bar-fill" style="width:' + newPct + '%;background:' + newColor + ';border-radius:6px 0 0 6px;">' +
+            '<span>' + newV.toFixed(2) + '</span>' +
+          '</div>' +
+          '<div class="bar-fill" style="width:' + retPct + '%;background:' + retColor + ';border-radius:0 6px 6px 0;">' +
+            (retV > 0.5 ? '<span style="color:#1A1612;">' + retV.toFixed(2) + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="bar-val" style="' + bold + '">' + total.toFixed(2) + '억</div>' +
+      '</div>';
+  }
+
+  var totHtml = '<div class="bar-card"><h3>전체 신환(■) + 구환(■) 매출</h3>';
+  var totLegend = '<div style="display:flex;gap:16px;margin-bottom:14px;font-size:11px;font-weight:600;">' +
+    '<span><span style="display:inline-block;width:12px;height:12px;background:#5F4838;border-radius:3px;margin-right:4px;vertical-align:middle;"></span>신환</span>' +
+    '<span><span style="display:inline-block;width:12px;height:12px;background:#B4B4B4;border-radius:3px;margin-right:4px;vertical-align:middle;"></span>구환</span>' +
+    '</div>';
+  totHtml += totLegend;
+  months.forEach(function(m, i){
+    totHtml += buildBar(m, totNew[i], totRet[i], totMax, false, '#5F4838');
+  });
+  totHtml += '</div>';
+
+  var domHtml = '<div class="bar-card"><h3>국내 신환(■) + 구환(■) 매출</h3>';
+  var domLegend = '<div style="display:flex;gap:16px;margin-bottom:14px;font-size:11px;font-weight:600;">' +
+    '<span><span style="display:inline-block;width:12px;height:12px;background:#1A1612;border-radius:3px;margin-right:4px;vertical-align:middle;"></span>신환</span>' +
+    '<span><span style="display:inline-block;width:12px;height:12px;background:#B4B4B4;border-radius:3px;margin-right:4px;vertical-align:middle;"></span>구환</span>' +
+    '</div>';
+  domHtml += domLegend;
+  months.forEach(function(m, i){
+    domHtml += buildBar(m, domNew[i], domRet[i], domMax, false, '#1A1612');
+  });
+  domHtml += '</div>';
+
+  var glbHtml = '<div class="bar-card"><h3>해외 신환(■) + 구환(■) 매출</h3>';
+  var glbLegend = '<div style="display:flex;gap:16px;margin-bottom:14px;font-size:11px;font-weight:600;">' +
+    '<span><span style="display:inline-block;width:12px;height:12px;background:#FF4500;border-radius:3px;margin-right:4px;vertical-align:middle;"></span>신환</span>' +
+    '<span><span style="display:inline-block;width:12px;height:12px;background:#B4B4B4;border-radius:3px;margin-right:4px;vertical-align:middle;"></span>구환</span>' +
+    '</div>';
+  glbHtml += glbLegend;
+  months.forEach(function(m, i){
+    glbHtml += buildBar(m, glbNew[i], glbRet[i], glbMax, true, '#FF4500');
+  });
+  glbHtml += '</div>';
+
+  document.getElementById('bar-section').innerHTML = totHtml + domHtml + glbHtml;
+})();
+
+/* ── 인사이트 ── */
+(function(){
+  var insights = [
+    {
+      cls: 'alert',
+      tag: 'tag-red', tagTxt: '국내 핵심 이슈',
+      title: '국내 매출 — 신환 DB 감소가 주원인',
+      body: '국내 매출은 전월 대비 <strong>▼17.5%_▼1.68억</strong>, 3개월 평균 대비 <strong>▼20.3%_▼2.06억</strong>. 매출 자체가 크게 빠졌지만 동의율(71.1%)과 객단가(580만)는 3개월 평균 수준이므로, <strong>상담수 감소(전월 193건 → 211건은 증가지만 매출 기여는 미흡)</strong>보다 신환 매출이 2월 이후 구조적으로 하강 중(<strong>8.65 → 7.62 → 6.60 → 6.03억</strong>)인 것이 핵심. 구환 매출도 5월 3.17억에서 2.05억으로 급감해 이중 타격.'
+    },
+    {
+      cls: 'warn',
+      tag: 'tag-blue', tagTxt: '국내 구환 이탈',
+      title: '국내 구환 매출 급락 — 전월 대비 ▼35%',
+      body: '구환(coordinator_name IS NULL) 매출이 <strong>5월 3.17억 → 6월 2.05억으로 ▼35.3%</strong> 급락. 3개월 평균(약 1.97억)과 비교하면 소폭 높지만, 5월이 비정상적으로 높았던 구환 집중 월이었음. 인콜/아웃콜 DB 유입 이전에 수납하는 기존 구환 흐름이 약해지고 있는지 확인 필요.'
+    },
+    {
+      cls: 'ok',
+      tag: 'tag-green', tagTxt: '해외 전월 회복',
+      title: '해외 — 전월 대비 회복, 3개월 평균은 아직 하회',
+      body: '해외 매출 전월(5월 3.77억) 대비 <strong>▲33.4%_▲1.26억</strong> 회복. 상담수도 37건 → 64건으로 대폭 증가, 동의율 82.5%로 양호. 단, 직전 3개월 평균(5.53억) 대비는 <strong>▼9.0%_▼0.50억</strong>으로 아직 하회 중. 4월 급등(7.25억)의 기저효과로 3개월 평균이 높게 형성된 영향이 크므로 과도한 우려는 불필요.'
+    },
+    {
+      cls: 'neutral',
+      tag: 'tag-amber', tagTxt: '해외 객단가 하락',
+      title: '해외 객단가 하락 — 고단가 건 감소 가능성',
+      body: '해외 객단가 6월 1,082만 vs 전월 1,198만(▼9.7%) vs 3개월 평균 1,369만(▼21.0%). 상담수와 동의수는 회복됐지만 건당 단가는 낮아졌음. 4월 고단가 다건 유입(1,495만) 이후 정상 회귀일 가능성이 높으나, 일본 환자 구성 및 치료 라인업 mix를 추가 확인 권장.'
+    }
+  ];
+
+  var html = '';
+  insights.forEach(function(ins){
+    html += '<div class="insight-card ' + ins.cls + '">';
+    html += '<h3>' + ins.title + ' <span class="tag ' + ins.tag + '">' + ins.tagTxt + '</span></h3>';
+    html += '<p>' + ins.body + '</p>';
+    html += '</div>';
+  });
+  document.getElementById('insight-grid').innerHTML = html;
+})();
+
+})();
+</script>
+</body>
+</html>
